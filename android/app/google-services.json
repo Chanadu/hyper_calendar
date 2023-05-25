@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "1056852281598",
+    "project_id": "hyper-calendar-e066b",
+    "storage_bucket": "hyper-calendar-e066b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056852281598:android:71a76b7cd98f8c4403fdaf",
+        "android_client_info": {
+          "package_name": "com.example.hyper_calendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5DCdxkEOFRTZB5ykXsBG0N3KLr8HY-XI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1056852281598-jib68nkoh71vjocl0517j0jlsfbpmgk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056852281598:android:80c875ea2295a0dc03fdaf",
+        "android_client_info": {
+          "package_name": "com.example.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5DCdxkEOFRTZB5ykXsBG0N3KLr8HY-XI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1056852281598-jib68nkoh71vjocl0517j0jlsfbpmgk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056852281598:android:4a818fd5e841f31103fdaf",
+        "android_client_info": {
+          "package_name": "me.chanadu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5DCdxkEOFRTZB5ykXsBG0N3KLr8HY-XI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056852281598-luo7sauo6060sue6aka1u4ggrlupq6gs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1056852281598-jib68nkoh71vjocl0517j0jlsfbpmgk6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
