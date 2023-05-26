@@ -12,6 +12,7 @@ class DayPage extends StatefulWidget {
 }
 
 class _DayPageState extends State<DayPage> {
+  final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -24,7 +25,12 @@ class _DayPageState extends State<DayPage> {
       borderRadius: const BorderRadius.all(Radius.circular(5)),
     );
 
-    void saveNewTask() {}
+    void saveNewTask() {
+      setState(() {
+        _controller.clear();
+      });
+      Navigator.of(context).pop();
+    }
 
     void createNewTask() {
       showDialog(
@@ -59,21 +65,10 @@ class _DayPageState extends State<DayPage> {
               for (int i = 0; i < 24; i++)
                 Column(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        LeftDivider(objectDecoration: objectDecoration),
-                        Container(
-                          margin: const EdgeInsets.only(left: 16, right: 16),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "${i % 12 + 1} ${i - 12 < 0 ? "AM" : "PM"}",
-                            style: textStyle,
-                          ),
-                        ),
-                        RightDivider(objectDecoration: objectDecoration),
-                      ],
+                    TimeRow(
+                      objectDecoration: objectDecoration,
+                      i: i,
+                      textStyle: textStyle,
                     ),
                     const HeightSpacer(),
                     Row(
@@ -105,6 +100,39 @@ class _DayPageState extends State<DayPage> {
         onPressed: createNewTask,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class TimeRow extends StatelessWidget {
+  const TimeRow({
+    super.key,
+    required this.objectDecoration,
+    required this.i,
+    required this.textStyle,
+  });
+
+  final Decoration objectDecoration;
+  final int i;
+  final TextStyle? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        LeftDivider(objectDecoration: objectDecoration),
+        Container(
+          margin: const EdgeInsets.only(left: 16, right: 16),
+          child: Text(
+            textAlign: TextAlign.center,
+            "${i % 12 + 1} ${i - 12 < 0 ? "AM" : "PM"}",
+            style: textStyle,
+          ),
+        ),
+        RightDivider(objectDecoration: objectDecoration),
+      ],
     );
   }
 }

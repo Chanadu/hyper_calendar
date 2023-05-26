@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-
-import 'pages/day_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'pages/create_new_task.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  final MaterialColor swatch = Colors.green;
+  final MaterialColor swatch = Colors.blue;
   final TextTheme textTheme = const TextTheme(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0),
-    bodyMedium: TextStyle(fontSize: 20.0),
-    bodySmall: TextStyle(fontSize: 14.0),
+    bodyMedium: TextStyle(fontSize: 25.0),
   );
   // This widget is the root of your application.
   @override
@@ -35,7 +39,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Georgia',
         textTheme: textTheme,
       ),
-      home: const DayPage(title: "Saturday"),
+      home: const CreateNewTask(),
     );
   }
 }
