@@ -28,7 +28,7 @@ class CreateNewTask extends StatelessWidget {
                 hint: "",
                 controller: TextEditingController(),
               ),
-              DateInputListTile(
+              const DateInputListTile(
                 title: "Date",
               ),
             ],
