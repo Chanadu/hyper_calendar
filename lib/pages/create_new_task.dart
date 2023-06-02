@@ -13,34 +13,36 @@ class CreateNewTask extends StatelessWidget {
           "New Task",
         ),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(48.0),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             children: [
-              Holder(
+              const Holder(
                 title: "Basic Information",
                 child: BasicInformationTile(),
               ),
-              SizedBox(height: 32.0),
-              Holder(
+              const Holder(
                 title: "Timings",
                 child: DateInputListTile(),
+              ),
+              const Holder(
+                title: "Reminders",
+                child: Placeholder(),
+              ),
+              ElevatedButton(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Create",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                onPressed: () {},
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ElevatedButton(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Create",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        onPressed: () {},
       ),
     );
   }
@@ -58,22 +60,28 @@ class Holder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 48, top: 32, left: 32, right: 32),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color: Theme.of(context).colorScheme.surface,
-      ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.displayMedium,
+    return Column(
+      children: [
+        Container(
+          padding:
+              const EdgeInsets.only(bottom: 48, top: 32, left: 32, right: 32),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Theme.of(context).colorScheme.surface,
           ),
-          const SizedBox(height: 32.0),
-          child,
-        ],
-      ),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              const SizedBox(height: 32.0),
+              child,
+            ],
+          ),
+        ),
+        const SizedBox(height: 32.0),
+      ],
     );
   }
 }
