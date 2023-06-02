@@ -28,9 +28,16 @@ class MyApp extends StatelessWidget {
     onSurface: Colors.white,
   );
   final TextTheme textTheme = const TextTheme(
-    displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+    displayLarge: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0),
-    bodyMedium: TextStyle(fontSize: 25.0),
+    bodyMedium: TextStyle(fontSize: 26.0),
+    displayMedium: TextStyle(
+      fontSize: 36.0,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 32.0,
+      decoration: TextDecoration.underline,
+    ),
   );
   // This widget is the root of your application.
   @override
@@ -45,6 +52,9 @@ class MyApp extends StatelessWidget {
         textTheme: textTheme,
         colorScheme: colorScheme,
         scaffoldBackgroundColor: colorScheme.background,
+        appBarTheme: AppBarTheme(
+          titleTextStyle: textTheme.displayLarge,
+        ),
       ),
       home: const CreateNewTask(),
     );

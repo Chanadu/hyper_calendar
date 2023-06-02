@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../util/color_selector.dart';
-import '../util/text_input_list_tile.dart';
+import 'package:hyper_calendar/util/date_input_list_tile.dart';
+import '../util/basic_information_tile.dart';
 
 class CreateNewTask extends StatelessWidget {
   const CreateNewTask({super.key});
@@ -10,44 +10,69 @@ class CreateNewTask extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Create a New Task",
+          "New Task",
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: EdgeInsets.all(48.0),
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                    bottom: 48, top: 32, left: 32, right: 32),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Theme.of(context).colorScheme.surface,
-                ),
-                child: Column(
-                  children: [
-                    TextInputListTile(
-                      title: "Event Name",
-                      hint: "",
-                      controller: TextEditingController(),
-                      maxLines: 1,
-                    ),
-                    const SizedBox(height: 10),
-                    TextInputListTile(
-                      title: "Description",
-                      hint: "",
-                      controller: TextEditingController(),
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: 30),
-                    const ColorSelector(),
-                  ],
-                ),
+              Holder(
+                title: "Basic Information",
+                child: BasicInformationTile(),
+              ),
+              SizedBox(height: 32.0),
+              Holder(
+                title: "Timings",
+                child: DateInputListTile(),
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: ElevatedButton(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Create",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+class Holder extends StatelessWidget {
+  const Holder({
+    super.key,
+    required this.child,
+    required this.title,
+  });
+
+  final Widget child;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 48, top: 32, left: 32, right: 32),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          const SizedBox(height: 32.0),
+          child,
+        ],
       ),
     );
   }

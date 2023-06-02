@@ -26,40 +26,46 @@ class _ColorSelectorState extends State<ColorSelector> {
           "Color: ",
         ),
         Expanded(
-          child: GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Pick a color!'),
-                    content: SingleChildScrollView(
-                      child: ColorPicker(
-                        pickerColor: pickerColor,
-                        onColorChanged: changeColor,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(
+                        'Pick a color!',
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            currentColor = pickerColor;
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: const Text("Done"),
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: currentColor,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      content: SingleChildScrollView(
+                        child: ColorPicker(
+                          pickerColor: pickerColor,
+                          onColorChanged: changeColor,
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              currentColor = pickerColor;
+                              Navigator.of(context).pop();
+                            });
+                          },
+                          child: const Text("Done"),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: currentColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
               ),
             ),
           ),

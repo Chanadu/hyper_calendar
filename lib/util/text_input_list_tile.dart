@@ -22,7 +22,9 @@ class TextInputListTile extends StatelessWidget {
         controller: controller,
         style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
           hintText: hint,
           labelText: title,
         ),
