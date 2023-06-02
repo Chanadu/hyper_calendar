@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/util/date_input_list_tile.dart';
+import '../util/color_selector.dart';
 import '../util/text_input_list_tile.dart';
 
 class CreateNewTask extends StatelessWidget {
@@ -22,15 +22,18 @@ class CreateNewTask extends StatelessWidget {
                 title: "Event Name",
                 hint: "",
                 controller: TextEditingController(),
+                maxLines: 1,
               ),
               TextInputListTile(
                 title: "Description",
                 hint: "",
                 controller: TextEditingController(),
+                maxLines: 3,
               ),
-              const DateInputListTile(
-                title: "Date",
-              ),
+              ColorSelector(),
+              // const DateInputListTile(
+              //   title: "Date",
+              // ),
             ],
           ),
         ),

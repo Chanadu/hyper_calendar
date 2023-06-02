@@ -6,11 +6,13 @@ class TextInputListTile extends StatelessWidget {
     required this.title,
     required this.hint,
     required this.controller,
+    required this.maxLines,
   });
 
   final TextEditingController controller;
   final String title;
   final String hint;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,8 @@ class TextInputListTile extends StatelessWidget {
           hintText: hint,
           labelText: title,
         ),
+        maxLines: maxLines,
+        minLines: 1,
       ),
     );
   }
