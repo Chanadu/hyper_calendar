@@ -31,7 +31,7 @@ class CreateNewTask extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ElevatedButton(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

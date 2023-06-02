@@ -10,47 +10,57 @@ class DateInputListTile extends StatefulWidget {
 }
 
 class _DateInputListTileState extends State<DateInputListTile> {
-  DateTime selectedStartDate = DateTime.now();
-  DateTime selectedEndDate = DateTime.now();
-  TimeOfDay selectedStartTime = TimeOfDay.now();
-  TimeOfDay selectedEndTime = TimeOfDay.now();
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        DateTimeSelector(title: "Start"),
+        SizedBox(height: 32),
+        DateTimeSelector(title: "End"),
+      ],
+    );
+  }
+}
 
-  Future<void> _selectDate(BuildContext context, bool start) async {
-    DateTime d = start ? selectedStartDate : selectedEndDate;
+class DateTimeSelector extends StatefulWidget {
+  const DateTimeSelector({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<DateTimeSelector> createState() => _DateTimeSelectorState();
+}
+
+class _DateTimeSelectorState extends State<DateTimeSelector> {
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: d,
+      initialDate: selectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != d) {
+    if (picked != null && picked != selectedDate) {
       setState(
         () {
-          if (start) {
-            selectedStartDate = picked;
-          } else {
-            selectedEndDate = picked;
-          }
+          selectedDate = picked;
         },
       );
     }
   }
 
-  Future<void> _selectTime(BuildContext context, bool start) async {
-    TimeOfDay t = start ? selectedStartTime : selectedEndTime;
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       orientation: Orientation.portrait,
       context: context,
-      initialTime: t,
+      initialTime: selectedTime,
     );
-    if (picked != null && picked != t) {
+    if (picked != null && picked != selectedTime) {
       setState(
         () {
-          if (start) {
-            selectedStartTime = picked;
-          } else {
-            selectedEndTime = picked;
-          }
+          selectedTime = picked;
         },
       );
     }
@@ -62,7 +72,7 @@ class _DateInputListTileState extends State<DateInputListTile> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "Start Date",
+          "${widget.title} Date",
           style: Theme.of(context).textTheme.displaySmall,
           textAlign: TextAlign.center,
         ),
@@ -70,84 +80,36 @@ class _DateInputListTileState extends State<DateInputListTile> {
         Wrap(
           alignment: WrapAlignment.spaceEvenly,
           children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _selectDate(context, true),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  child: Text(
-                    "Starting Date: ${selectedStartDate.month}-${selectedStartDate.day}-${selectedStartDate.year}",
-                  ),
+            ElevatedButton(
+              onPressed: () => _selectDate(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side:
+                      BorderSide(color: Theme.of(context).colorScheme.primary),
                 ),
+                padding: const EdgeInsets.all(32.0),
+              ),
+              child: Text(
+                "${widget.title}ing Date: ${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _selectTime(context, true),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  child: Text(
-                    "Time Selected: ${selectedStartTime.hourOfPeriod}:${selectedStartTime.minute.toString().padLeft(2, "0")} ${selectedStartTime.period.toString().split('.')[1].toUpperCase()}",
-                  ),
+            ElevatedButton(
+              onPressed: () => _selectTime(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side:
+                      BorderSide(color: Theme.of(context).colorScheme.primary),
                 ),
+                padding: const EdgeInsets.all(32.0),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Text(
-          "End Date",
-          style: Theme.of(context).textTheme.displaySmall,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16.0),
-        Wrap(
-          alignment: WrapAlignment.spaceEvenly,
-          children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _selectDate(context, false),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  child: Text(
-                    "Starting Date: ${selectedEndDate.month}-${selectedEndDate.day}-${selectedEndDate.year}",
-                  ),
-                ),
-              ),
-            ),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => _selectTime(context, true),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                  child: Text(
-                    "Time Selected: ${selectedEndTime.hourOfPeriod}:${selectedEndTime.minute.toString().padLeft(2, "0")} ${selectedEndTime.period.toString().split('.')[1].toUpperCase()}",
-                  ),
-                ),
+              child: Text(
+                "${widget.title} Time: ${selectedTime.hourOfPeriod}:${selectedTime.minute.toString().padLeft(2, "0")} ${selectedTime.period.toString().split('.')[1].toUpperCase()}",
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ],
@@ -156,24 +118,3 @@ class _DateInputListTileState extends State<DateInputListTile> {
     );
   }
 }
-
-
-/*
-
-                    ElevatedButton(
-                      onPressed: () => _selectDate(context, true),
-                      child: const Text('Pick Another Date'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _selectDate(context, false),
-                      child: const Text('Pick Another Date'),
-                    ),
-                      "Ending Date: ${selectedEndDate.month}-${selectedEndDate.day}-${selectedEndDate.year}",
-                ElevatedButton(
-                  onPressed: () => _selectTime(context, true),
-                  child: const Text('Pick a Time'),
-                ),
-                "Time Selected: ${selectedStartTime.hourOfPeriod}:${selectedStartTime.minute.toString().padLeft(2, "0")} ${selectedStartTime.period.toString().split('.')[1].toUpperCase()}",
-                  
-
-*/
