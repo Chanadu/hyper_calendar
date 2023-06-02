@@ -14,7 +14,19 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  final MaterialColor swatch = Colors.blue;
+  final ColorScheme colorScheme = const ColorScheme(
+    brightness: Brightness.dark,
+    primary: Colors.blue,
+    onPrimary: Colors.white,
+    secondary: Colors.blueAccent,
+    onSecondary: Colors.white,
+    error: Colors.red,
+    onError: Colors.white,
+    background: Color(0xFF121212),
+    onBackground: Colors.white,
+    surface: Color(0xFF1d1d1d),
+    onSurface: Colors.white,
+  );
   final TextTheme textTheme = const TextTheme(
     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0),
@@ -27,17 +39,12 @@ class MyApp extends StatelessWidget {
       title: 'Hyper',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: swatch,
-        fontFamily: 'Georgia',
-        textTheme: textTheme,
-      ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: swatch,
         fontFamily: 'Georgia',
         textTheme: textTheme,
+        colorScheme: colorScheme,
+        scaffoldBackgroundColor: colorScheme.background,
       ),
       home: const CreateNewTask(),
     );
