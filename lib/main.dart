@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:hyper_calendar/pages/main_page.dart';
+import 'package:hyper_calendar/util/create_task/new_task_model.dart';
+import 'package:provider/provider.dart';
 import 'pages/create_new_task.dart';
-import 'sensitive-info/firebase_options.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await ref.set({
+  //   "test 1": 1,
+  //   "test 2": "ASFS",
+  //   "test 3": {
+  //     "A": true,
+  //   },
+  // });
 
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

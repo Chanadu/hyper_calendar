@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/util/date_input_list_tile.dart';
-import '../util/basic_information_tile.dart';
+
+import '../util/create_task/basic/basic_information_tile.dart';
+import '../util/create_task/date/date_input_list_tile.dart';
 
 class CreateNewTask extends StatelessWidget {
   const CreateNewTask({super.key});
