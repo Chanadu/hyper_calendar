@@ -1,57 +1,56 @@
 import 'package:flutter/material.dart';
 
-// class NewTaskModel extends ChangeNotifier {
-//   String eventName = 'A New Task';
-//   String description = "A short description of the new task.";
-//   Color color = Colors.blue;
+class NewTaskModel extends ChangeNotifier {
+  String _eventName = 'A New Task';
+  String get eventName => _eventName;
+  String _description = "A short description of the new task.";
+  String get description => _description;
+  Color _color = Colors.blue;
+  Color get color => _color;
 
-//   DateTime startDate = DateTime.now();
-//   TimeOfDay startTimeOfDay = TimeOfDay.now();
-//   DateTime endDate = DateTime.now();
-//   TimeOfDay endTimeOfDay = TimeOfDay.now();
+  DateTime _startDate = DateUtils.dateOnly(DateTime.now());
+  DateTime get startDate => _startDate;
+  TimeOfDay _startTimeOfDay = TimeOfDay.now();
+  TimeOfDay get startTimeOfDay => _startTimeOfDay;
+  DateTime _endDate = DateUtils.dateOnly(DateTime.now());
+  DateTime get endDate => _endDate;
+  TimeOfDay _endTimeOfDay = TimeOfDay.now();
+  TimeOfDay get endTimeOfDay => _endTimeOfDay;
 
-//   bool get isOneDayTask => startDate.isAtSameMomentAs(endDate);
+  bool get isOneDayTask => _startDate.isAtSameMomentAs(_endDate);
 
-//   DateTime getStartDate() => startDate;
-//   DateTime getEndDate() => endDate;
-//   TimeOfDay getStartTimeOfDay() => startTimeOfDay;
-//   TimeOfDay getEndTimeOfDay() => endTimeOfDay;
-//   Color getColor() => color;
-//   String getEventName() => eventName;
-//   String getDescription() => description;
+  void setStartDate(DateTime startDate) {
+    _startDate = DateUtils.dateOnly(startDate);
+    notifyListeners();
+  }
 
-//   void setStartDate(DateTime startDate) {
-//     this.startDate = startDate;
-//     notifyListeners();
-//   }
+  void setEndDate(DateTime endDate) {
+    _endDate = DateUtils.dateOnly(endDate);
+    notifyListeners();
+  }
 
-//   void setEndDate(DateTime endDate) {
-//     this.endDate = endDate;
-//     notifyListeners();
-//   }
+  void setStartTimeOfDay(TimeOfDay startTimeOfDay) {
+    _startTimeOfDay = startTimeOfDay;
+    notifyListeners();
+  }
 
-//   void setStartTimeOfDay(TimeOfDay startTimeOfDay) {
-//     this.startTimeOfDay = startTimeOfDay;
-//     notifyListeners();
-//   }
+  void setEndTimeOfDay(TimeOfDay endTimeOfDay) {
+    _endTimeOfDay = endTimeOfDay;
+    notifyListeners();
+  }
 
-//   void setEndTimeOfDay(TimeOfDay endTimeOfDay) {
-//     this.endTimeOfDay = endTimeOfDay;
-//     notifyListeners();
-//   }
+  void setColor(Color color) {
+    _color = color;
+    notifyListeners();
+  }
 
-//   void setColor(Color color) {
-//     this.color = color;
-//     notifyListeners();
-//   }
+  void setEventName(String eventName) {
+    _eventName = eventName;
+    notifyListeners();
+  }
 
-//   void setEventName(String eventName) {
-//     this.eventName = eventName;
-//     notifyListeners();
-//   }
-
-//   void setDescription(String description) {
-//     this.description = description;
-//     notifyListeners();
-//   }
-// }
+  void setDescription(String description) {
+    _description = description;
+    notifyListeners();
+  }
+}

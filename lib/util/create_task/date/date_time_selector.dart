@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../new_task_model.dart';
 
 class DateTimeSelector extends StatefulWidget {
   const DateTimeSelector({super.key, required this.title});
@@ -24,6 +27,13 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       setState(
         () {
           selectedDate = picked;
+          if (widget.title == "Start") {
+            Provider.of<NewTaskModel>(context, listen: false)
+                .setStartDate(selectedDate);
+          } else if (widget.title == "End") {
+            Provider.of<NewTaskModel>(context, listen: false)
+                .setEndDate(selectedDate);
+          }
         },
       );
     }
@@ -39,6 +49,13 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       setState(
         () {
           selectedTime = picked;
+          if (widget.title == "Start") {
+            Provider.of<NewTaskModel>(context, listen: false)
+                .setStartTimeOfDay(picked);
+          } else if (widget.title == "End") {
+            Provider.of<NewTaskModel>(context, listen: false)
+                .setEndTimeOfDay(picked);
+          }
         },
       );
     }
