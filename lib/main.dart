@@ -4,14 +4,6 @@ import 'package:provider/provider.dart';
 import 'pages/create_new_task.dart';
 
 void main() async {
-  // await ref.set({
-  //   "test 1": 1,
-  //   "test 2": "ASFS",
-  //   "test 3": {
-  //     "A": true,
-  //   },
-  // });
-
   runApp(
     ChangeNotifierProvider(
       create: (context) => NewTaskModel(),
