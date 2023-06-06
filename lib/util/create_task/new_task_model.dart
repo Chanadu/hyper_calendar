@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'enums/custom_repetition_types.dart';
+import 'enums/repetition_types.dart';
+
 class NewTaskModel extends ChangeNotifier {
   String _eventName = 'A New Task';
   String get eventName => _eventName;
@@ -18,6 +21,12 @@ class NewTaskModel extends ChangeNotifier {
   TimeOfDay get endTimeOfDay => _endTimeOfDay;
 
   bool get isOneDayTask => _startDate.isAtSameMomentAs(_endDate);
+
+  RepetitionTypes _repetitionState = RepetitionTypes.doesNotRepeat;
+  RepetitionTypes get repetitionState => _repetitionState;
+
+  final CustomRepetition _customRepetition = CustomRepetition(CustomRepetitionTypes.days);
+  CustomRepetition get customRepetition => _customRepetition;
 
   void setStartDate(DateTime startDate) {
     _startDate = DateUtils.dateOnly(startDate);
@@ -51,6 +60,11 @@ class NewTaskModel extends ChangeNotifier {
 
   void setDescription(String description) {
     _description = description;
+    notifyListeners();
+  }
+
+  void setRepetitionState(RepetitionTypes repetitionState) {
+    _repetitionState = repetitionState;
     notifyListeners();
   }
 }
