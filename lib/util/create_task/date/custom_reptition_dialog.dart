@@ -18,9 +18,11 @@ class CustomRepetitionDialog extends StatefulWidget {
 class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
   RepetitionEndType _endType = RepetitionEndType.never;
 
+  DateTime selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
-    var onChange = (RepetitionEndType? type) {
+    onChange(RepetitionEndType? type) {
       setState(
         () {
           if (type != null) {
@@ -32,16 +34,34 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
           }
         },
       );
-    };
+    }
+
+    Future<void> selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2020),
+        lastDate: DateTime(2100),
+      );
+      if (picked != null && picked != selectedDate) {
+        setState(
+          () {
+            selectedDate = picked;
+          },
+        );
+      }
+    }
 
     return SimpleDialog(
       title: const Text("Custom Repetition Selector"),
       children: [
-        const Row(
+        Row(
           children: [
-            Text("Repeat every "),
-            NumberInput(),
-            DialogRepetitionDrowndownMenuButton(),
+            const Text("Repeat every "),
+            NumberInput(
+              textStyle: Theme.of(context).textTheme.bodyMedium!,
+            ),
+            const DialogRepetitionDrowndownMenuButton(),
           ],
         ),
         const SizedBox(height: 16),
@@ -50,7 +70,14 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
           children: [
             const Text("Ends"),
             ListTile(
-              title: const Text("Never"),
+              title: Row(
+                children: [
+                  Text(
+                    "Never",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                ],
+              ),
               leading: Radio<RepetitionEndType>(
                 value: RepetitionEndType.never,
                 groupValue: _endType,
@@ -58,7 +85,28 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
               ),
             ),
             ListTile(
-              title: const Text("On"),
+              title: Row(
+                children: [
+                  Text(
+                    "On  ",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => selectDate(context),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    child: Text(
+                      "${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
               leading: Radio<RepetitionEndType>(
                 value: RepetitionEndType.on,
                 groupValue: _endType,
@@ -66,7 +114,21 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
               ),
             ),
             ListTile(
-              title: const Text("After"),
+              title: Row(
+                children: [
+                  Text(
+                    "After",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  NumberInput(
+                    textStyle: Theme.of(context).textTheme.bodyMedium!,
+                  ),
+                  Text(
+                    "occurences",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
               leading: Radio<RepetitionEndType>(
                 value: RepetitionEndType.after,
                 groupValue: _endType,

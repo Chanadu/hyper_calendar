@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../util/create_task/basic/basic_information_tile.dart';
 import '../util/create_task/date/date_input_list_tile.dart';
+import '../util/create_task/reminders/reminder_tile.dart';
 
 class CreateNewTask extends StatelessWidget {
   const CreateNewTask({super.key});
@@ -29,7 +30,7 @@ class CreateNewTask extends StatelessWidget {
               ),
               const Holder(
                 title: "Reminders",
-                child: Placeholder(),
+                child: ReminderTile(),
               ),
               ElevatedButton(
                 child: Padding(
@@ -64,8 +65,7 @@ class Holder extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding:
-              const EdgeInsets.only(bottom: 48, top: 32, left: 32, right: 32),
+          padding: const EdgeInsets.only(bottom: 48, top: 32, left: 32, right: 32),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             color: Theme.of(context).colorScheme.surface,
