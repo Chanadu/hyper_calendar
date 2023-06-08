@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'enums/custom_repetition_types.dart';
+import 'enums/reminder_types.dart';
 import 'enums/repetition_types.dart';
 
 class NewTaskModel extends ChangeNotifier {
@@ -10,6 +11,10 @@ class NewTaskModel extends ChangeNotifier {
   String get description => _description;
   Color _color = Colors.blue;
   Color get color => _color;
+  ReminderTypes _firstReminder = ReminderTypes.noReminder;
+  ReminderTypes get firstReminder => _firstReminder;
+  ReminderTypes _secondReminder = ReminderTypes.noReminder;
+  ReminderTypes get secondReminder => _secondReminder;
 
   DateTime _startDate = DateUtils.dateOnly(DateTime.now());
   DateTime get startDate => _startDate;
@@ -65,6 +70,16 @@ class NewTaskModel extends ChangeNotifier {
 
   void setRepetitionState(RepetitionTypes repetitionState) {
     _repetitionState = repetitionState;
+    notifyListeners();
+  }
+
+  void setFirstReminder(ReminderTypes firstReminder) {
+    _firstReminder = firstReminder;
+    notifyListeners();
+  }
+
+  void setSecondReminder(ReminderTypes secondReminder) {
+    _secondReminder = secondReminder;
     notifyListeners();
   }
 }

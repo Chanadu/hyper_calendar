@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../util/create_task/basic/basic_information_tile.dart';
 import '../util/create_task/date/date_input_list_tile.dart';
-import '../util/create_task/reminders/reminder_tile.dart';
 
 class CreateNewTask extends StatelessWidget {
   const CreateNewTask({super.key});
@@ -27,10 +26,6 @@ class CreateNewTask extends StatelessWidget {
               const Holder(
                 title: "Timings",
                 child: DateInputListTile(),
-              ),
-              const Holder(
-                title: "Reminders",
-                child: ReminderTile(),
               ),
               ElevatedButton(
                 child: Padding(

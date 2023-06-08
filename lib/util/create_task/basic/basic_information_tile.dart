@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'reminders/reminder_tile.dart';
 import 'color_selector.dart';
 import 'text_input_list_tile.dart';
 
@@ -27,6 +28,8 @@ class BasicInformationTile extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         const ColorSelector(),
+        const SizedBox(height: 30),
+        const ReminderTile(),
       ],
     );
   }

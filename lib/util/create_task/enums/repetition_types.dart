@@ -12,15 +12,15 @@ String repetitionTypesToString(RepetitionTypes type) {
     case RepetitionTypes.doesNotRepeat:
       return 'Does not Repeat';
     case RepetitionTypes.daily:
-      return 'Daily';
+      return 'Daily Repetition';
     case RepetitionTypes.weekly:
-      return 'Weekly';
+      return 'Weekly Repetition';
     case RepetitionTypes.monthly:
-      return 'Monthly';
+      return 'Monthly Repetition';
     case RepetitionTypes.yearly:
-      return 'Yearly';
+      return 'Yearly Repetition';
     case RepetitionTypes.custom:
-      return 'Custom';
+      return 'Custom Repetition';
     default:
       return 'WHAT HAPPENED!';
   }
