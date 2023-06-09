@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_calendar/pages/main_page.dart';
 import 'package:hyper_calendar/util/create_task/new_task_model.dart';
 import 'package:provider/provider.dart';
-import 'pages/create_new_task.dart';
 
 void main() async {
   runApp(
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         ),
         dialogBackgroundColor: colorScheme.primaryContainer,
       ),
-      home: const CreateNewTask(),
+      home: const MainPage(),
     );
   }
 }
