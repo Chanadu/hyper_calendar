@@ -8,6 +8,7 @@ class ReminderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ReminderDropdownMenu(
           startingText: "First Reminder at  ",

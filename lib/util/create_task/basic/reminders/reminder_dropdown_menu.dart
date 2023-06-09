@@ -22,7 +22,10 @@ class _ReminderDropdownMenuState extends State<ReminderDropdownMenu> {
   ReminderTypes dropdownValue = ReminderTypes.noReminder;
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      alignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      
       children: [
         Text(widget.startingText),
         DropdownButton(

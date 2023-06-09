@@ -25,6 +25,7 @@ class _ColorSelectorState extends State<ColorSelector> {
         const Text(
           "Color: ",
         ),
+        const SizedBox(width: 16),
         Expanded(
           child: MouseRegion(
             cursor: SystemMouseCursors.click,

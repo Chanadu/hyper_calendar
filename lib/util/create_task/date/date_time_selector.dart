@@ -28,11 +28,9 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
         () {
           selectedDate = picked;
           if (widget.title == "Start") {
-            Provider.of<NewTaskModel>(context, listen: false)
-                .setStartDate(selectedDate);
+            Provider.of<NewTaskModel>(context, listen: false).setStartDate(selectedDate);
           } else if (widget.title == "End") {
-            Provider.of<NewTaskModel>(context, listen: false)
-                .setEndDate(selectedDate);
+            Provider.of<NewTaskModel>(context, listen: false).setEndDate(selectedDate);
           }
         },
       );
@@ -50,11 +48,9 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
         () {
           selectedTime = picked;
           if (widget.title == "Start") {
-            Provider.of<NewTaskModel>(context, listen: false)
-                .setStartTimeOfDay(picked);
+            Provider.of<NewTaskModel>(context, listen: false).setStartTimeOfDay(picked);
           } else if (widget.title == "End") {
-            Provider.of<NewTaskModel>(context, listen: false)
-                .setEndTimeOfDay(picked);
+            Provider.of<NewTaskModel>(context, listen: false).setEndTimeOfDay(picked);
           }
         },
       );
@@ -81,8 +77,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  side:
-                      BorderSide(color: Theme.of(context).colorScheme.primary),
+                  side: BorderSide(color: Theme.of(context).colorScheme.primary),
                 ),
                 padding: const EdgeInsets.all(32.0),
               ),
@@ -97,8 +92,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  side:
-                      BorderSide(color: Theme.of(context).colorScheme.primary),
+                  side: BorderSide(color: Theme.of(context).colorScheme.primary),
                 ),
                 padding: const EdgeInsets.all(32.0),
               ),

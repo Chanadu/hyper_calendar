@@ -55,85 +55,109 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
     return SimpleDialog(
       title: const Text("Custom Repetition Selector"),
       children: [
-        Row(
-          children: [
-            const Text("Repeat every "),
-            NumberInput(
-              textStyle: Theme.of(context).textTheme.bodyMedium!,
-            ),
-            const DialogRepetitionDrowndownMenuButton(),
-          ],
-        ),
-        const SizedBox(height: 16),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text("Ends"),
-            ListTile(
-              title: Row(
-                children: [
-                  Text(
-                    "Never",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                ],
-              ),
-              leading: Radio<RepetitionEndType>(
-                value: RepetitionEndType.never,
-                groupValue: _endType,
-                onChanged: onChange,
-              ),
+            Row(
+              children: [
+                const Text("Repeat every "),
+                NumberInput(
+                  textStyle: Theme.of(context).textTheme.bodyMedium!,
+                ),
+                const DialogRepetitionDrowndownMenuButton(),
+              ],
             ),
-            ListTile(
-              title: Row(
-                children: [
-                  Text(
-                    "On  ",
-                    style: Theme.of(context).textTheme.bodyMedium,
+            const SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                const Text("Ends"),
+                ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        "Never",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () => selectDate(context),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  leading: Radio<RepetitionEndType>(
+                    value: RepetitionEndType.never,
+                    groupValue: _endType,
+                    onChanged: onChange,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        "On  ",
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                      ElevatedButton(
+                        onPressed: () => selectDate(context),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                          ),
+                          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        child: Text(
+                          "${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                  leading: Radio<RepetitionEndType>(
+                    value: RepetitionEndType.on,
+                    groupValue: _endType,
+                    onChanged: onChange,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        "After",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      NumberInput(
+                        textStyle: Theme.of(context).textTheme.bodyMedium!,
+                      ),
+                      Text(
+                        "occurences",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  leading: Radio<RepetitionEndType>(
+                    value: RepetitionEndType.after,
+                    groupValue: _endType,
+                    onChanged: onChange,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Done",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    child: Text(
-                      "${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-              leading: Radio<RepetitionEndType>(
-                value: RepetitionEndType.on,
-                groupValue: _endType,
-                onChanged: onChange,
-              ),
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Text(
-                    "After",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  NumberInput(
-                    textStyle: Theme.of(context).textTheme.bodyMedium!,
-                  ),
-                  Text(
-                    "occurences",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              leading: Radio<RepetitionEndType>(
-                value: RepetitionEndType.after,
-                groupValue: _endType,
-                onChanged: onChange,
-              ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
