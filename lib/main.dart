@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/pages/create_new_task.dart';
 import 'package:hyper_calendar/pages/main_page.dart';
 import 'package:hyper_calendar/util/create_task/new_task_model.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +28,7 @@ class MyApp extends StatelessWidget {
     surface: Color(0xFF1d1d1d),
     onSurface: Colors.white,
     primaryContainer: Color(0xFF262626),
+    surfaceVariant: Colors.white24, //used as disabled text
   );
   final TextTheme textTheme = const TextTheme(
     displayLarge: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
       decoration: TextDecoration.underline,
     ),
     labelMedium: TextStyle(fontSize: 32.0),
+    titleMedium: TextStyle(fontSize: 36.0, decoration: TextDecoration.underline),
   );
   // This widget is the root of your application.
   @override
