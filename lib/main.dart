@@ -34,15 +34,10 @@ class MyApp extends StatelessWidget {
     displayLarge: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0),
     bodyMedium: TextStyle(fontSize: 24.0),
-    displayMedium: TextStyle(
-      fontSize: 36.0,
-    ),
-    displaySmall: TextStyle(
-      fontSize: 32.0,
-      decoration: TextDecoration.underline,
-    ),
+    displayMedium: TextStyle(fontSize: 36.0),
+    displaySmall: TextStyle(fontSize: 32.0),
     labelMedium: TextStyle(fontSize: 32.0),
-    titleMedium: TextStyle(fontSize: 36.0, decoration: TextDecoration.underline),
+    titleMedium: TextStyle(fontSize: 36.0),
   );
   // This widget is the root of your application.
   @override

@@ -64,7 +64,10 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       children: [
         Text(
           "${widget.title} Date",
-          style: Theme.of(context).textTheme.displaySmall,
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,
+            decoration: TextDecoration.underline,
+          ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16.0),

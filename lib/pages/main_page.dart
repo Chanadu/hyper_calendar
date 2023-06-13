@@ -227,11 +227,14 @@ class _MainCalendarState extends State<MainCalendar> {
                 children: [
                   Text(
                     "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(selectedDate)}:",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
               for (int i = 0; i < 12; i++)
                 Container(
                   decoration: BoxDecoration(

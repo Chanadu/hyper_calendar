@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_calendar/util/create_task/enums/custom_repetition_types.dart';
+import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
 import 'package:provider/provider.dart';
 
 import '../enums/reptition_end_type.dart';
@@ -16,21 +18,18 @@ class CustomRepetitionDialog extends StatefulWidget {
 }
 
 class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
-  RepetitionEndType _endType = RepetitionEndType.never;
-
   DateTime selectedDate = DateTime.now();
+  List<String> weekDaysOneLetter = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  List<bool> weekDaysSelected = [];
 
   @override
   Widget build(BuildContext context) {
+    RepetitionEndType endType = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndType;
     onChange(RepetitionEndType? type) {
       setState(
         () {
           if (type != null) {
-            Provider.of<NewTaskModel>(context, listen: false)
-                .customRepetition
-                .end
-                .setRepetitionEndType(type);
-            _endType = type;
+            Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionEndType(type);
           }
         },
       );
@@ -68,6 +67,36 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
               ],
             ),
             const SizedBox(height: 16),
+            Provider.of<NewTaskModel>(context, listen: true).customRepetitionType == CustomRepetitionTypes.weeks
+                ? Row(
+                    children: [
+                      for (int i = 0; i < 7; i++)
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                Text(weekDaysOneLetter[i]),
+                                Checkbox(
+                                  fillColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
+                                  value: Provider.of<NewTaskModel>(context, listen: false).customRepetitionDayList.contains(Days.values[i]),
+                                  onChanged: (_) {
+                                    setState(
+                                      () {
+                                        Provider.of<NewTaskModel>(context, listen: false).customRepetitionDayList.contains(Days.values[i])
+                                            ? Provider.of<NewTaskModel>(context, listen: false).removeDayToCustomRepetitionDayList(Days.values[i])
+                                            : Provider.of<NewTaskModel>(context, listen: false).addDayToCustomRepetitionDayList(Days.values[i]);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 16),
+                          ],
+                        ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -84,7 +113,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   ),
                   leading: Radio<RepetitionEndType>(
                     value: RepetitionEndType.never,
-                    groupValue: _endType,
+                    groupValue: endType,
                     onChanged: onChange,
                   ),
                 ),
@@ -114,7 +143,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   ),
                   leading: Radio<RepetitionEndType>(
                     value: RepetitionEndType.on,
-                    groupValue: _endType,
+                    groupValue: endType,
                     onChanged: onChange,
                   ),
                 ),
@@ -137,7 +166,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   ),
                   leading: Radio<RepetitionEndType>(
                     value: RepetitionEndType.after,
-                    groupValue: _endType,
+                    groupValue: endType,
                     onChanged: onChange,
                   ),
                 ),
@@ -153,7 +182,14 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        if (Provider.of<NewTaskModel>(context, listen: false).isOneDayTask &&
+                            Provider.of<NewTaskModel>(context, listen: false).customRepetitionDayList.isEmpty &&
+                            Provider.of<NewTaskModel>(context, listen: false).customRepetitionType == CustomRepetitionTypes.weeks) {
+                          Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionDayList([Days.values[Provider.of<NewTaskModel>(context, listen: false).startDate.weekday]]);
+                        }
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),

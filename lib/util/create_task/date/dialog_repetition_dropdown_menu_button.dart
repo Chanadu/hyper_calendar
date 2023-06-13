@@ -9,14 +9,14 @@ class DialogRepetitionDrowndownMenuButton extends StatefulWidget {
     super.key,
   });
   @override
-  State<DialogRepetitionDrowndownMenuButton> createState() =>
-      _DialogRepetitionDrowndownMenuButtonState();
+  State<DialogRepetitionDrowndownMenuButton> createState() => _DialogRepetitionDrowndownMenuButtonState();
 }
 
 class _DialogRepetitionDrowndownMenuButtonState extends State<DialogRepetitionDrowndownMenuButton> {
-  CustomRepetitionTypes dropdownValue = CustomRepetitionTypes.days;
+  late CustomRepetitionTypes dropdownValue;
   @override
   Widget build(BuildContext context) {
+    dropdownValue = Provider.of<NewTaskModel>(context, listen: false).customRepetitionType;
     return DropdownButton<CustomRepetitionTypes>(
       value: dropdownValue,
       icon: Icon(Icons.arrow_downward_rounded, color: Theme.of(context).colorScheme.primary),
@@ -36,7 +36,7 @@ class _DialogRepetitionDrowndownMenuButtonState extends State<DialogRepetitionDr
           () {
             if (value != null) {
               dropdownValue = value;
-              Provider.of<NewTaskModel>(context, listen: false).customRepetition.setType(value);
+              Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionType(value);
             }
           },
         );
