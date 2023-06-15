@@ -46,6 +46,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
         setState(
           () {
             selectedDate = picked;
+            Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionEndTypeStopDate(picked);
           },
         );
       }
@@ -62,6 +63,9 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                 const Text("Repeat every "),
                 NumberInput(
                   textStyle: Theme.of(context).textTheme.bodyMedium!,
+                  update: (int count) {
+                    Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionDuration(count);
+                  },
                 ),
                 const DialogRepetitionDrowndownMenuButton(),
               ],
@@ -157,6 +161,9 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                       ),
                       NumberInput(
                         textStyle: Theme.of(context).textTheme.bodyMedium!,
+                        update: (int count) {
+                          Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionEndTypeOccurences(count);
+                        },
                       ),
                       Text(
                         "occurences",

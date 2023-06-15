@@ -7,7 +7,12 @@ import 'text_input_list_tile.dart';
 class BasicInformationTile extends StatelessWidget {
   const BasicInformationTile({
     super.key,
+    required this.nameController,
+    required this.descriptionController,
   });
+
+  final TextEditingController nameController;
+  final TextEditingController descriptionController;
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +21,14 @@ class BasicInformationTile extends StatelessWidget {
         TextInputListTile(
           title: "Event Name",
           hint: "",
-          controller: TextEditingController(),
+          controller: nameController,
           maxLines: 1,
         ),
         const SizedBox(height: 10),
         TextInputListTile(
           title: "Description",
           hint: "",
-          controller: TextEditingController(),
+          controller: descriptionController,
           maxLines: 3,
         ),
         const SizedBox(height: 30),

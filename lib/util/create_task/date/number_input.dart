@@ -6,9 +6,11 @@ class NumberInput extends StatefulWidget {
   const NumberInput({
     super.key,
     required this.textStyle,
+    required this.update,
   });
 
   final TextStyle textStyle;
+  final Function update;
 
   @override
   State<NumberInput> createState() => _NumberInputState();
@@ -20,6 +22,7 @@ class _NumberInputState extends State<NumberInput> {
   void increment() {
     setState(() {
       count++;
+      widget.update(count);
     });
   }
 
@@ -27,6 +30,7 @@ class _NumberInputState extends State<NumberInput> {
     if (count <= 1) return;
     setState(() {
       count--;
+      widget.update(count);
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_calendar/mongo_db.dart';
 import 'package:hyper_calendar/util/create_task/enums/custom_repetition_types.dart';
 import 'package:hyper_calendar/util/create_task/enums/reminder_types.dart';
 import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
@@ -11,7 +12,10 @@ import '../util/create_task/new_task_model.dart';
 import '../util/holder.dart';
 
 class CreateNewTask extends StatelessWidget {
-  const CreateNewTask({super.key});
+  CreateNewTask({super.key});
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,34 +47,63 @@ class CreateNewTask extends StatelessWidget {
           padding: const EdgeInsets.all(32.0),
           child: Column(
             children: [
-              const Holder(
+              Holder(
                 title: "Basic Information",
-                child: BasicInformationTile(),
+                child: BasicInformationTile(
+                  nameController: nameController,
+                  descriptionController: descriptionController,
+                ),
               ),
               const Holder(
                 title: "Timings",
                 child: DateInputListTile(),
               ),
-              Provider.of<NewTaskModel>(context, listen: true).startDate.isAfter(Provider.of<NewTaskModel>(context, listen: true).endDate) ||
+              Provider.of<NewTaskModel>(context, listen: true).startTimeOfDay.compareTo(Provider.of<NewTaskModel>(context, listen: true).endTimeOfDay) >= 0 &&
                       Provider.of<NewTaskModel>(context, listen: true).endDate.isAtSameMomentAs(Provider.of<NewTaskModel>(context, listen: true).startDate)
                   ? const Text("Make sure the end date/time is before the start date/time.")
                   : const SizedBox.shrink(),
               const SizedBox(height: 8),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
-                onPressed: Provider.of<NewTaskModel>(context, listen: true).startDate.isAfter(Provider.of<NewTaskModel>(context, listen: true).endDate) ||
-                        Provider.of<NewTaskModel>(context, listen: true).endDate.isAtSameMomentAs(Provider.of<NewTaskModel>(context, listen: true).startDate)
-                    ? null
-                    : () {
-                        Navigator.pop(context);
-                      },
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Create",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
+              Consumer<NewTaskModel>(
+                builder: (context, value, child) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
+                    onPressed: Provider.of<NewTaskModel>(context, listen: true).startTimeOfDay.compareTo(Provider.of<NewTaskModel>(context, listen: true).endTimeOfDay) >= 0 &&
+                            Provider.of<NewTaskModel>(context, listen: true).endDate.isAtSameMomentAs(Provider.of<NewTaskModel>(context, listen: true).startDate)
+                        ? null
+                        : () {
+                            value.setEventName(nameController.text);
+                            value.setDescription(descriptionController.text);
+                            MongoDB.insert(
+                              MongoDbModel(
+                                value.eventName,
+                                value.description,
+                                value.color,
+                                value.firstReminder,
+                                value.secondReminder,
+                                value.startDate,
+                                value.startTimeOfDay,
+                                value.endDate,
+                                value.endTimeOfDay,
+                                value.repetitionState,
+                                value.customRepetitionType,
+                                value.customRepetitionDayList,
+                                value.customRepetitionEndType,
+                                value.customRepetitionDuration,
+                                value.customRepetitionEndTypeOccurences,
+                                value.customRepetitionEndTypeStopDate,
+                              ),
+                            );
+                            Navigator.pop(context);
+                          },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Create",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

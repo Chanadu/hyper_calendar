@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:hyper_calendar/util/create_task/new_task_model.dart';
+import 'package:provider/provider.dart';
 
 class ColorSelector extends StatefulWidget {
   const ColorSelector({
@@ -15,7 +17,10 @@ class _ColorSelectorState extends State<ColorSelector> {
   Color currentColor = Colors.blue;
 
   void changeColor(Color color) {
-    setState(() => pickerColor = color);
+    setState(() {
+      pickerColor = color;
+      Provider.of<NewTaskModel>(context, listen: false).setColor(color);
+    });
   }
 
   @override
@@ -48,13 +53,11 @@ class _ColorSelectorState extends State<ColorSelector> {
                       actions: [
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              currentColor = pickerColor;
-                              Navigator.of(context).pop();
-                            });
+                            changeColor(currentColor);
+                            Navigator.of(context).pop();
                           },
                           child: const Text("Done"),
-                        )
+                        ),
                       ],
                     );
                   },

@@ -38,6 +38,8 @@ class NewTaskModel extends ChangeNotifier {
   RepetitionEndType _customRepetitionEndType = RepetitionEndType.never;
   RepetitionEndType get customRepetitionEndType => _customRepetitionEndType;
 
+  int? _customRepetitionDuration;
+  int? get customRepetitionDuration => _customRepetitionDuration;
   int? _customRepetitionEndTypeOccurences;
   int? get customRepetitionEndTypeOccurences => _customRepetitionEndTypeOccurences;
   DateTime? _customRepetitionEndTypeStopDate;
@@ -132,5 +134,19 @@ class NewTaskModel extends ChangeNotifier {
   void setCustomRepetitionEndTypeStopDate(DateTime? stopDate) {
     _customRepetitionEndTypeStopDate = stopDate;
     notifyListeners();
+  }
+
+  void setCustomRepetitionDuration(int? duration) {
+    _customRepetitionDuration = duration;
+  }
+}
+
+extension TimeOfDayExtension on TimeOfDay {
+  int compareTo(TimeOfDay other) {
+    if (hour < other.hour) return -1;
+    if (hour > other.hour) return 1;
+    if (minute < other.minute) return -1;
+    if (minute > other.minute) return 1;
+    return 0;
   }
 }
