@@ -7,17 +7,19 @@ class NumberInput extends StatefulWidget {
     super.key,
     required this.textStyle,
     required this.update,
+    this.startingNumber,
   });
 
   final TextStyle textStyle;
   final Function update;
+  final int? startingNumber;
 
   @override
   State<NumberInput> createState() => _NumberInputState();
 }
 
 class _NumberInputState extends State<NumberInput> {
-  int count = 1;
+  late int count = widget.startingNumber ?? 1;
 
   void increment() {
     setState(() {

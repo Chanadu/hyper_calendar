@@ -18,18 +18,18 @@ class CustomRepetitionDialog extends StatefulWidget {
 }
 
 class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
-  DateTime selectedDate = DateTime.now();
-  List<String> weekDaysOneLetter = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  List<bool> weekDaysSelected = [];
+  final List<String> weekDaysOneLetter = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   @override
   Widget build(BuildContext context) {
     RepetitionEndType endType = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndType;
+    DateTime selectedDate = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeStopDate ?? DateTime.now();
     onChange(RepetitionEndType? type) {
       setState(
         () {
           if (type != null) {
             Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionEndType(type);
+            endType = type;
           }
         },
       );
@@ -66,6 +66,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   update: (int count) {
                     Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionDuration(count);
                   },
+                  startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionDuration ?? 1,
                 ),
                 const DialogRepetitionDrowndownMenuButton(),
               ],
@@ -164,6 +165,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                         update: (int count) {
                           Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionEndTypeOccurences(count);
                         },
+                        startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeOccurences ?? 1,
                       ),
                       Text(
                         "occurences",

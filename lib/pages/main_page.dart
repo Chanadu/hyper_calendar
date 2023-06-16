@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/pages/create_new_task.dart';
 import 'package:intl/intl.dart';
-
 import '../util/holder.dart';
 
 class MainPage extends StatelessWidget {
@@ -27,7 +26,9 @@ class MainPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateNewTask()),
+            MaterialPageRoute(
+              builder: (context) => CreateNewTask(),
+            ),
           );
         },
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -215,43 +216,57 @@ class _MainCalendarState extends State<MainCalendar> {
             ],
           ),
         ),
-        Holder(
-          width: MediaQuery.of(context).size.width * 2.0 / 3.0,
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        TasksHolder(selectedDate: selectedDate),
+      ],
+    );
+  }
+}
+
+class TasksHolder extends StatelessWidget {
+  const TasksHolder({
+    super.key,
+    required this.selectedDate,
+  });
+
+  final DateTime selectedDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Holder(
+      width: MediaQuery.of(context).size.width * 2.0 / 3.0,
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(selectedDate)}:",
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              for (int i = 0; i < 12; i++)
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Theme.of(context).colorScheme.primary),
-                  ),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    '    • Task ${i + 1}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+              Text(
+                "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(selectedDate)}:",
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+                  decoration: TextDecoration.underline,
                 ),
+              ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 32),
+          for (int i = 0; i < 12; i++)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Theme.of(context).colorScheme.primary),
+              ),
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                '    • Task ${i + 1}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

@@ -58,22 +58,22 @@ class CreateNewTask extends StatelessWidget {
                 title: "Timings",
                 child: DateInputListTile(),
               ),
-              Provider.of<NewTaskModel>(context, listen: true).startTimeOfDay.compareTo(Provider.of<NewTaskModel>(context, listen: true).endTimeOfDay) >= 0 &&
-                      Provider.of<NewTaskModel>(context, listen: true).endDate.isAtSameMomentAs(Provider.of<NewTaskModel>(context, listen: true).startDate)
-                  ? const Text("Make sure the end date/time is before the start date/time.")
-                  : const SizedBox.shrink(),
+              Consumer<NewTaskModel>(builder: (context, value, child) {
+                return value.startTimeOfDay.compareTo(value.endTimeOfDay) >= 0 && value.startDate.compareTo(value.endDate) >= 0
+                    ? const Text("Make sure the start date/time is before the end date/time.")
+                    : const SizedBox.shrink();
+              }),
               const SizedBox(height: 8),
               Consumer<NewTaskModel>(
                 builder: (context, value, child) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
-                    onPressed: Provider.of<NewTaskModel>(context, listen: true).startTimeOfDay.compareTo(Provider.of<NewTaskModel>(context, listen: true).endTimeOfDay) >= 0 &&
-                            Provider.of<NewTaskModel>(context, listen: true).endDate.isAtSameMomentAs(Provider.of<NewTaskModel>(context, listen: true).startDate)
+                    onPressed: value.startTimeOfDay.compareTo(value.endTimeOfDay) >= 0 && value.startDate.compareTo(value.endDate) >= 0
                         ? null
-                        : () {
+                        : () async {
                             value.setEventName(nameController.text);
                             value.setDescription(descriptionController.text);
-                            MongoDB.insert(
+                            String response = await MongoDB.insert(
                               MongoDbModel(
                                 value.eventName,
                                 value.description,
@@ -93,7 +93,34 @@ class CreateNewTask extends StatelessWidget {
                                 value.customRepetitionEndTypeStopDate,
                               ),
                             );
-                            Navigator.pop(context);
+                            if (context.mounted) {
+                              value.setStartDate(DateTime.now());
+                              value.setEndDate(DateTime.now());
+                              value.setStartTimeOfDay(TimeOfDay.now());
+                              value.setEndTimeOfDay(TimeOfDay.now());
+                              value.setColor(Theme.of(context).colorScheme.primary);
+                              value.setDescription("");
+                              value.setEventName("");
+                              value.setFirstReminder(ReminderTypes.noReminder);
+                              value.setSecondReminder(ReminderTypes.noReminder);
+                              value.setRepetitionState(RepetitionTypes.doesNotRepeat);
+                              value.setCustomRepetitionType(CustomRepetitionTypes.days);
+                              value.setCustomRepetitionEndType(RepetitionEndType.never);
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Center(
+                                  child: Text(
+                                    response,
+                                    style: TextStyle(
+                                      color: Theme.of(context).colorScheme.onPrimary,
+                                      fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                              ));
+                              Navigator.pop(context);
+                            }
                           },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),

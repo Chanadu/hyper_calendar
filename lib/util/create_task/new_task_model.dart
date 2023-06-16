@@ -143,10 +143,23 @@ class NewTaskModel extends ChangeNotifier {
 
 extension TimeOfDayExtension on TimeOfDay {
   int compareTo(TimeOfDay other) {
-    if (hour < other.hour) return -1;
-    if (hour > other.hour) return 1;
-    if (minute < other.minute) return -1;
-    if (minute > other.minute) return 1;
+    if (hour < other.hour) {
+      print("Hour before hour");
+      return -1;
+    }
+    if (hour > other.hour) {
+      print("Hour after house");
+      return 1;
+    }
+    if (minute < other.minute) {
+      print("Minute before Minute");
+      return -1;
+    }
+    if (minute > other.minute) {
+      print("Minute after Minute");
+      return 1;
+    }
+    print("Bro why");
     return 0;
   }
 }

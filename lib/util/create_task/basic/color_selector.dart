@@ -14,7 +14,6 @@ class ColorSelector extends StatefulWidget {
 
 class _ColorSelectorState extends State<ColorSelector> {
   Color pickerColor = Colors.blue;
-  Color currentColor = Colors.blue;
 
   void changeColor(Color color) {
     setState(() {
@@ -53,7 +52,6 @@ class _ColorSelectorState extends State<ColorSelector> {
                       actions: [
                         ElevatedButton(
                           onPressed: () {
-                            changeColor(currentColor);
                             Navigator.of(context).pop();
                           },
                           child: const Text("Done"),
@@ -67,7 +65,7 @@ class _ColorSelectorState extends State<ColorSelector> {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: currentColor,
+                  color: pickerColor,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
               ),

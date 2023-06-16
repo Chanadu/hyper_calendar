@@ -21,7 +21,7 @@ class MongoDB {
     try {
       WriteResult result = await coll.insertOne(model.toJSON());
       if (result.isSuccess) {
-        return "Successfully added Event";
+        return "Successfully Added Event!";
       } else {
         return "Something went wrong. Try again later.";
       }
@@ -37,8 +37,8 @@ class MongoDbModel {
   String description;
   Color color;
 
-  ReminderTypes reminder1;
-  ReminderTypes reminder2;
+  ReminderTypes firstReminder;
+  ReminderTypes secondReminder;
 
   DateTime startDate;
   TimeOfDay startTime;
@@ -60,8 +60,8 @@ class MongoDbModel {
     this.eventName,
     this.description,
     this.color,
-    this.reminder1,
-    this.reminder2,
+    this.firstReminder,
+    this.secondReminder,
     this.startDate,
     this.startTime,
     this.endDate,
@@ -76,14 +76,29 @@ class MongoDbModel {
   ]) {
     id = ObjectId();
   }
+
+  MongoDbModel.fromJSON(Map<String, dynamic> json) {
+    id = json["_id"];
+    eventName = json["eventName"];
+    description = json["description"];
+    color = json["color"];
+    firstReminder = json["reminders"]["first"];
+    secondReminder = json["reminders"]["second"];
+    startDate = DateTime(json["start"]["date"]["year"], json["start"]["date"]["month"], json["start"]["date"]["day"]);
+    startTime = TimeOfDay(hour: json["start"]["time"]["hour"], minute: json["start"]["time"]["minute"]);
+    endDate = DateTime(json["end"]["date"]["year"], json["end"]["date"]["month"], json["end"]["date"]["day"]);
+    endTime = TimeOfDay(hour: json["endTime"]["time"]["hour"], minute: json["endTime"]["time"]["minute"]);
+    repetitionState = json["repetition"]["state"];
+  }
+
   Map<String, dynamic> toJSON() => {
         "_id": id,
         "eventName": eventName,
         "description": description,
         "color": color.value,
         "reminders": {
-          "first": reminder1.toString(),
-          "second": reminder2.toString(),
+          "first": firstReminder.toString(),
+          "second": secondReminder.toString(),
         },
         "start": {
           "date": {
@@ -133,4 +148,10 @@ class MongoDbModel {
           },
         },
       };
+}
+
+extension EnumParser on String {
+  T? toEnum<T>(List<T?> values) {
+    return values.firstWhere((e) => e.toString().toLowerCase().split(".").last == toLowerCase(), orElse: () => null); //return null if not found
+  }
 }

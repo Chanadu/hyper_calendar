@@ -27,11 +27,11 @@ String repetitionTypesToString(RepetitionTypes type) {
 }
 
 enum Days {
+  sunday,
   monday,
   tuesday,
   wednesday,
   thursday,
   friday,
   saturday,
-  sunday,
 }
