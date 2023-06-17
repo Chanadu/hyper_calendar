@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hyper_calendar/pages/create_new_task.dart';
 import 'package:intl/intl.dart';
 import '../util/holder.dart';
+import '../util/main_page/tasks_holder.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -48,7 +49,7 @@ class MainCalendar extends StatefulWidget {
 class _MainCalendarState extends State<MainCalendar> {
   List<String> weekdaysList = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
   DateTime currentMonthYearDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime selectedDate = DateUtils.dateOnly(DateTime.now());
+  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +136,7 @@ class _MainCalendarState extends State<MainCalendar> {
                     for (int i = 1; i <= 42; i++)
                       Container(
                         decoration: BoxDecoration(
-                          border: i > calendarWeekStartIndex && i < numberOfDaysInMonth + 1 + calendarWeekStartIndex && i - calendarWeekStartIndex == selectedDate.day
+                          border: selectedDate != null && i > calendarWeekStartIndex && i < numberOfDaysInMonth + 1 + calendarWeekStartIndex && i - calendarWeekStartIndex == selectedDate!.day
                               ? Border.all(color: Theme.of(context).colorScheme.primary)
                               : Border.all(color: Theme.of(context).colorScheme.primaryContainer),
                           borderRadius: BorderRadius.circular(16),
@@ -147,7 +148,10 @@ class _MainCalendarState extends State<MainCalendar> {
                                       width: double.infinity,
                                       height: double.infinity,
                                       decoration: BoxDecoration(
-                                        border: i > calendarWeekStartIndex && i < numberOfDaysInMonth + 1 + calendarWeekStartIndex && i - calendarWeekStartIndex == selectedDate.day
+                                        border: selectedDate != null &&
+                                                i > calendarWeekStartIndex &&
+                                                i < numberOfDaysInMonth + 1 + calendarWeekStartIndex &&
+                                                i - calendarWeekStartIndex == selectedDate!.day
                                             ? Border.all(color: Theme.of(context).colorScheme.primary)
                                             : Border.all(color: Theme.of(context).colorScheme.primaryContainer),
                                         borderRadius: BorderRadius.circular(16),
@@ -218,55 +222,6 @@ class _MainCalendarState extends State<MainCalendar> {
         ),
         TasksHolder(selectedDate: selectedDate),
       ],
-    );
-  }
-}
-
-class TasksHolder extends StatelessWidget {
-  const TasksHolder({
-    super.key,
-    required this.selectedDate,
-  });
-
-  final DateTime selectedDate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Holder(
-      width: MediaQuery.of(context).size.width * 2.0 / 3.0,
-      padding: const EdgeInsets.all(32.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(selectedDate)}:",
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          for (int i = 0; i < 12; i++)
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Theme.of(context).colorScheme.primary),
-              ),
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                '    • Task ${i + 1}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-        ],
-      ),
     );
   }
 }

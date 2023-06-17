@@ -75,6 +75,7 @@ class CreateNewTask extends StatelessWidget {
                             value.setDescription(descriptionController.text);
                             String response = await MongoDB.insert(
                               MongoDbModel(
+                                null,
                                 value.eventName,
                                 value.description,
                                 value.color,
