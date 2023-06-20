@@ -23,19 +23,19 @@ class NewTask extends StatelessWidget {
               controller: controller,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: "Add a New Event",
+                hintText: 'Add a New Event',
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MyButton(
-                  text: "Save",
+                  text: 'Save',
                   onPressed: onSave,
                 ),
                 const SizedBox(width: 8),
                 MyButton(
-                  text: "Cancel",
+                  text: 'Cancel',
                   onPressed: onCancel,
                 ),
               ],

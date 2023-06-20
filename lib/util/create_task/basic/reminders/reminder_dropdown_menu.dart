@@ -55,7 +55,7 @@ class _ReminderDropdownMenuState extends State<ReminderDropdownMenu> {
             );
           },
         ),
-        const Text("."),
+        const Text('.'),
       ],
     );
   }

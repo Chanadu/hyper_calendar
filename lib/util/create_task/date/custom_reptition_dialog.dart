@@ -23,7 +23,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
   @override
   Widget build(BuildContext context) {
     RepetitionEndType endType = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndType;
-    DateTime selectedDate = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeStopDate ?? DateTime.now();
+    DateTime selectedDate = Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeStopDate ?? DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     onChange(RepetitionEndType? type) {
       setState(
         () {
@@ -53,14 +53,14 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
     }
 
     return SimpleDialog(
-      title: const Text("Custom Repetition Selector"),
+      title: const Text('Custom Repetition Selector'),
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Text("Repeat every "),
+                const Text('Repeat every '),
                 NumberInput(
                   textStyle: Theme.of(context).textTheme.bodyMedium!,
                   update: (int count) {
@@ -106,12 +106,12 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
-                const Text("Ends"),
+                const Text('Ends'),
                 ListTile(
                   title: Row(
                     children: [
                       Text(
-                        "Never",
+                        'Never',
                         style: Theme.of(context).textTheme.bodyMedium,
                       )
                     ],
@@ -127,7 +127,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   title: Row(
                     children: [
                       Text(
-                        "On  ",
+                        'On  ',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       ElevatedButton(
@@ -140,7 +140,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                         ),
                         child: Text(
-                          "${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
+                          '${selectedDate.month}-${selectedDate.day}-${selectedDate.year}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
@@ -157,7 +157,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   title: Row(
                     children: [
                       Text(
-                        "After",
+                        'After',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       NumberInput(
@@ -168,7 +168,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                         startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeOccurences ?? 1,
                       ),
                       Text(
-                        "occurences",
+                        'occurences',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
@@ -187,7 +187,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Done",
+                          'Done',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),

@@ -80,7 +80,7 @@ class _DayPageState extends State<DayPage> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                "$screenWidth $screenHeight",
+                                '$screenWidth $screenHeight',
                                 style: textStyle,
                               ),
                             ),

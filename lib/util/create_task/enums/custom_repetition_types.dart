@@ -8,14 +8,14 @@ enum CustomRepetitionTypes {
 String customRepetitionTypesToString(CustomRepetitionTypes type) {
   switch (type) {
     case CustomRepetitionTypes.days:
-      return "Days";
+      return 'Days';
     case CustomRepetitionTypes.months:
-      return "Months";
+      return 'Months';
     case CustomRepetitionTypes.weeks:
-      return "Weeks";
+      return 'Weeks';
     case CustomRepetitionTypes.years:
-      return "Years";
+      return 'Years';
     default:
-      return "WHAT HAPPENED!";
+      return 'WHAT HAPPENED!';
   }
 }

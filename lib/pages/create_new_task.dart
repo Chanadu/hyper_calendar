@@ -4,6 +4,7 @@ import 'package:hyper_calendar/util/create_task/enums/custom_repetition_types.da
 import 'package:hyper_calendar/util/create_task/enums/reminder_types.dart';
 import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
 import 'package:hyper_calendar/util/create_task/enums/reptition_end_type.dart';
+import 'package:hyper_calendar/util/main_page/time_of_day_compare_to.dart';
 import 'package:provider/provider.dart';
 
 import '../util/create_task/basic/basic_information_tile.dart';
@@ -22,7 +23,7 @@ class CreateNewTask extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "New Task",
+          'New Task',
         ),
         leading: BackButton(
           onPressed: () {
@@ -31,8 +32,8 @@ class CreateNewTask extends StatelessWidget {
             Provider.of<NewTaskModel>(context, listen: false).setStartTimeOfDay(TimeOfDay.now());
             Provider.of<NewTaskModel>(context, listen: false).setEndTimeOfDay(TimeOfDay.now());
             Provider.of<NewTaskModel>(context, listen: false).setColor(Theme.of(context).colorScheme.primary);
-            Provider.of<NewTaskModel>(context, listen: false).setDescription("");
-            Provider.of<NewTaskModel>(context, listen: false).setEventName("");
+            Provider.of<NewTaskModel>(context, listen: false).setDescription('');
+            Provider.of<NewTaskModel>(context, listen: false).setEventName('');
             Provider.of<NewTaskModel>(context, listen: false).setFirstReminder(ReminderTypes.noReminder);
             Provider.of<NewTaskModel>(context, listen: false).setSecondReminder(ReminderTypes.noReminder);
             Provider.of<NewTaskModel>(context, listen: false).setRepetitionState(RepetitionTypes.doesNotRepeat);
@@ -48,19 +49,19 @@ class CreateNewTask extends StatelessWidget {
           child: Column(
             children: [
               Holder(
-                title: "Basic Information",
+                title: 'Basic Information',
                 child: BasicInformationTile(
                   nameController: nameController,
                   descriptionController: descriptionController,
                 ),
               ),
               const Holder(
-                title: "Timings",
+                title: 'Timings',
                 child: DateInputListTile(),
               ),
               Consumer<NewTaskModel>(builder: (context, value, child) {
                 return value.startTimeOfDay.compareTo(value.endTimeOfDay) >= 0 && value.startDate.compareTo(value.endDate) >= 0
-                    ? const Text("Make sure the start date/time is before the end date/time.")
+                    ? const Text('Make sure the start date/time is before the end date/time.')
                     : const SizedBox.shrink();
               }),
               const SizedBox(height: 8),
@@ -100,8 +101,8 @@ class CreateNewTask extends StatelessWidget {
                               value.setStartTimeOfDay(TimeOfDay.now());
                               value.setEndTimeOfDay(TimeOfDay.now());
                               value.setColor(Theme.of(context).colorScheme.primary);
-                              value.setDescription("");
-                              value.setEventName("");
+                              value.setDescription('');
+                              value.setEventName('');
                               value.setFirstReminder(ReminderTypes.noReminder);
                               value.setSecondReminder(ReminderTypes.noReminder);
                               value.setRepetitionState(RepetitionTypes.doesNotRepeat);
@@ -126,7 +127,7 @@ class CreateNewTask extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        "Create",
+                        'Create',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),

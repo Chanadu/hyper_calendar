@@ -14,26 +14,26 @@ enum ReminderTypes {
 String reminderTypesToString(ReminderTypes reminderType) {
   switch (reminderType) {
     case ReminderTypes.noReminder:
-      return "No Reminder";
+      return 'No Reminder';
     case ReminderTypes.min3:
-      return "3 Minutes";
+      return '3 Minutes';
     case ReminderTypes.min5:
-      return "5 Minutes";
+      return '5 Minutes';
     case ReminderTypes.min10:
-      return "10 Minutes";
+      return '10 Minutes';
     case ReminderTypes.min15:
-      return "15 Minutes";
+      return '15 Minutes';
     case ReminderTypes.min30:
-      return "30 Minutes";
+      return '30 Minutes';
     case ReminderTypes.hour1:
-      return "1 Hour";
+      return '1 Hour';
     case ReminderTypes.hour2:
-      return "2 Hour";
+      return '2 Hour';
     case ReminderTypes.day1:
-      return "1 Day";
+      return '1 Day';
     case ReminderTypes.week1:
-      return "1 Week";
+      return '1 Week';
     default:
-      return "WHAT HAPPENED";
+      return 'WHAT HAPPENED';
   }
 }

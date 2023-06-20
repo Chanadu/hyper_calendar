@@ -27,7 +27,7 @@ class _ColorSelectorState extends State<ColorSelector> {
     return Row(
       children: [
         const Text(
-          "Color: ",
+          'Color: ',
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -54,7 +54,7 @@ class _ColorSelectorState extends State<ColorSelector> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text("Done"),
+                          child: const Text('Done'),
                         ),
                       ],
                     );

@@ -45,7 +45,7 @@ class _NumberInputState extends State<NumberInput> {
           icon: Icons.arrow_upward_rounded,
         ),
         Text(
-          "$count",
+          '$count',
           style: widget.textStyle,
         ),
         SmallIconButton(

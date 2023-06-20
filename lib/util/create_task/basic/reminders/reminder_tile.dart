@@ -11,12 +11,12 @@ class ReminderTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ReminderDropdownMenu(
-          startingText: "First Reminder at  ",
+          startingText: 'First Reminder at  ',
           number: 1,
         ),
         SizedBox(height: 16),
         ReminderDropdownMenu(
-          startingText: "Second Reminder at  ",
+          startingText: 'Second Reminder at  ',
           number: 2,
         ),
       ],

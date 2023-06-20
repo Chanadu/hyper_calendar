@@ -12,8 +12,8 @@ class DateInputListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        DateTimeSelector(title: "Start"),
-        DateTimeSelector(title: "End"),
+        DateTimeSelector(title: 'Start'),
+        DateTimeSelector(title: 'End'),
         RepetitionSelector(),
       ],
     );

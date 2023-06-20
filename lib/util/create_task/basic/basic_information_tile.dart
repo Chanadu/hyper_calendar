@@ -19,15 +19,15 @@ class BasicInformationTile extends StatelessWidget {
     return Column(
       children: [
         TextInputListTile(
-          title: "Event Name",
-          hint: "",
+          title: 'Event Name',
+          hint: '',
           controller: nameController,
           maxLines: 1,
         ),
         const SizedBox(height: 10),
         TextInputListTile(
-          title: "Description",
-          hint: "",
+          title: 'Description',
+          hint: '',
           controller: descriptionController,
           maxLines: 3,
         ),

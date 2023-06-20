@@ -13,7 +13,7 @@ class DateTimeSelector extends StatefulWidget {
 }
 
 class _DateTimeSelectorState extends State<DateTimeSelector> {
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   TimeOfDay selectedTime = TimeOfDay.now();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -27,9 +27,9 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       setState(
         () {
           selectedDate = picked;
-          if (widget.title == "Start") {
+          if (widget.title == 'Start') {
             Provider.of<NewTaskModel>(context, listen: false).setStartDate(selectedDate);
-          } else if (widget.title == "End") {
+          } else if (widget.title == 'End') {
             Provider.of<NewTaskModel>(context, listen: false).setEndDate(selectedDate);
           }
         },
@@ -47,9 +47,9 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       setState(
         () {
           selectedTime = picked;
-          if (widget.title == "Start") {
+          if (widget.title == 'Start') {
             Provider.of<NewTaskModel>(context, listen: false).setStartTimeOfDay(picked);
-          } else if (widget.title == "End") {
+          } else if (widget.title == 'End') {
             Provider.of<NewTaskModel>(context, listen: false).setEndTimeOfDay(picked);
           }
         },
@@ -63,7 +63,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          "${widget.title} Date",
+          '${widget.title} Date',
           style: TextStyle(
             fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,
             decoration: TextDecoration.underline,
@@ -85,7 +85,7 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
                 padding: const EdgeInsets.all(32.0),
               ),
               child: Text(
-                "${widget.title}ing Date: ${selectedDate.month}-${selectedDate.day}-${selectedDate.year}",
+                '${widget.title}ing Date: ${selectedDate.month}-${selectedDate.day}-${selectedDate.year}',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),

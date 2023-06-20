@@ -11,7 +11,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hyper Calendar"),
+        title: const Text('Hyper Calendar'),
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),

@@ -8,7 +8,7 @@ import 'enums/reptition_end_type.dart';
 class NewTaskModel extends ChangeNotifier {
   String _eventName = 'A New Task';
   String get eventName => _eventName;
-  String _description = "A short description of the new task.";
+  String _description = 'A short description of the new task.';
   String get description => _description;
   Color _color = Colors.blue;
   Color get color => _color;
@@ -33,7 +33,7 @@ class NewTaskModel extends ChangeNotifier {
 
   CustomRepetitionTypes _customRepetitionType = CustomRepetitionTypes.days;
   CustomRepetitionTypes get customRepetitionType => _customRepetitionType;
-  late List<Days> _customRepetitionDayList = [Days.values[_startDate.weekday]];
+  late List<Days> _customRepetitionDayList = [Days.values[_startDate.weekday % 7]];
   List<Days> get customRepetitionDayList => _customRepetitionDayList;
   RepetitionEndType _customRepetitionEndType = RepetitionEndType.never;
   RepetitionEndType get customRepetitionEndType => _customRepetitionEndType;
@@ -116,7 +116,7 @@ class NewTaskModel extends ChangeNotifier {
   void setCustomRepetitionType(CustomRepetitionTypes type) {
     _customRepetitionType = type;
     if (type != CustomRepetitionTypes.weeks) {
-      _customRepetitionDayList = [Days.values[_startDate.weekday]];
+      _customRepetitionDayList = [Days.values[_startDate.weekday % 7]];
     }
     notifyListeners();
   }
@@ -138,28 +138,5 @@ class NewTaskModel extends ChangeNotifier {
 
   void setCustomRepetitionDuration(int? duration) {
     _customRepetitionDuration = duration;
-  }
-}
-
-extension TimeOfDayExtension on TimeOfDay {
-  int compareTo(TimeOfDay other) {
-    if (hour < other.hour) {
-      print("Hour before hour");
-      return -1;
-    }
-    if (hour > other.hour) {
-      print("Hour after house");
-      return 1;
-    }
-    if (minute < other.minute) {
-      print("Minute before Minute");
-      return -1;
-    }
-    if (minute > other.minute) {
-      print("Minute after Minute");
-      return 1;
-    }
-    print("Bro why");
-    return 0;
   }
 }
