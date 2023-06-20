@@ -78,58 +78,6 @@ class MongoDbModel {
     id = objectId ?? ObjectId();
   }
 
-  factory MongoDbModel.fromJSON(Map<String, dynamic> json) {
-    final ObjectId id = json['_id'] as ObjectId;
-    final String eventName = json['eventName'] as String;
-    final String description = json['description'] as String;
-    final Color color = Color(json['color'] as int);
-    final ReminderTypes firstReminder = json['reminders']['first'] as ReminderTypes;
-    final ReminderTypes secondReminder = json['reminders']['second'] as ReminderTypes;
-    final DateTime startDate = DateTime(json['start']['date']['year'] as int, json['start']['date']['month'] as int, json['start']['date']['day'] as int);
-    final TimeOfDay startTime = TimeOfDay(hour: json['start']['time']['hour'] as int, minute: json['start']['time']['minute'] as int);
-    final DateTime endDate = DateTime(json['end']['date']['year'] as int, json['end']['date']['month'] as int, json['end']['date']['day'] as int);
-    final TimeOfDay endTime = TimeOfDay(hour: json['endTime']['time']['hour'] as int, minute: json['endTime']['time']['minute'] as int);
-    final RepetitionTypes repetitionState = json['repetition']['state'] as RepetitionTypes;
-    final CustomRepetitionTypes customRepetitionType = json['repetition']['custom']['type'] as CustomRepetitionTypes;
-    final List<Days> customRepetitionDayList = [];
-    json['repetition']['custom']['dayList']['sunday'] ? customRepetitionDayList.add(Days.sunday) : null;
-    json['repetition']['custom']['dayList']['monday'] ? customRepetitionDayList.add(Days.monday) : null;
-    json['repetition']['custom']['dayList']['tuesday'] ? customRepetitionDayList.add(Days.tuesday) : null;
-    json['repetition']['custom']['dayList']['wednesday'] ? customRepetitionDayList.add(Days.wednesday) : null;
-    json['repetition']['custom']['dayList']['thursday'] ? customRepetitionDayList.add(Days.thursday) : null;
-    json['repetition']['custom']['dayList']['friday'] ? customRepetitionDayList.add(Days.friday) : null;
-    json['repetition']['custom']['dayList']['saturday'] ? customRepetitionDayList.add(Days.saturday) : null;
-    final customRepetitionEndType = json['repetition']['custom']['end'] as RepetitionEndType;
-    final int? customRepetitionDuration = json['repetition']['custom']['duration'] as int?;
-    int? customRepetitionEndTypeOccurences = json['repetition']['custom']['end']['occurences'] as int?;
-    DateTime? customRepetitionEndTypeStopDate = json['repetition']['custom']['end']['date']['year'] == null
-        ? null
-        : DateTime(
-            json['repetition']['custom']['end']['date']['year'] as int,
-            json['repetition']['custom']['end']['date']['month'] as int,
-            json['repetition']['custom']['end']['date']['day'] as int,
-          );
-    return MongoDbModel(
-      id,
-      eventName,
-      description,
-      color,
-      firstReminder,
-      secondReminder,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      repetitionState,
-      customRepetitionType,
-      customRepetitionDayList,
-      customRepetitionEndType,
-      customRepetitionDuration,
-      customRepetitionEndTypeOccurences,
-      customRepetitionEndTypeStopDate,
-    );
-  }
-
   Map<String, dynamic> toJSON() => {
         '_id': id,
         'eventName': eventName,
