@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/util/create_task/new_task_model.dart';
+import 'package:hyper_calendar/util/new_task_model.dart';
 import 'package:provider/provider.dart';
 
 import 'repetition_dropdown_menu_button.dart';

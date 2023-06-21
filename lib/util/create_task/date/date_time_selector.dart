@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../new_task_model.dart';
+import '../../new_task_model.dart';
 
 class DateTimeSelector extends StatefulWidget {
   const DateTimeSelector({super.key, required this.title});

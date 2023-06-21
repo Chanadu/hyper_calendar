@@ -4,7 +4,7 @@ import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
 import 'package:provider/provider.dart';
 
 import '../enums/reptition_end_type.dart';
-import '../new_task_model.dart';
+import '../../new_task_model.dart';
 import 'dialog_repetition_dropdown_menu_button.dart';
 import 'number_input.dart';
 
@@ -66,7 +66,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                   update: (int count) {
                     Provider.of<NewTaskModel>(context, listen: false).setCustomRepetitionDuration(count);
                   },
-                  startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionDuration ?? 1,
+                  startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionDuration,
                 ),
                 const DialogRepetitionDrowndownMenuButton(),
               ],

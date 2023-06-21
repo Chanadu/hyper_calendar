@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../enums/custom_repetition_types.dart';
-import '../new_task_model.dart';
+import '../../new_task_model.dart';
 
 class DialogRepetitionDrowndownMenuButton extends StatefulWidget {
   const DialogRepetitionDrowndownMenuButton({

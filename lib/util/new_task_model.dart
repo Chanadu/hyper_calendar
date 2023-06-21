@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'enums/custom_repetition_types.dart';
-import 'enums/reminder_types.dart';
-import 'enums/repetition_types.dart';
-import 'enums/reptition_end_type.dart';
+import 'create_task/enums/custom_repetition_types.dart';
+import 'create_task/enums/reminder_types.dart';
+import 'create_task/enums/repetition_types.dart';
+import 'create_task/enums/reptition_end_type.dart';
 
 class NewTaskModel extends ChangeNotifier {
   String _eventName = 'A New Task';
@@ -38,8 +38,8 @@ class NewTaskModel extends ChangeNotifier {
   RepetitionEndType _customRepetitionEndType = RepetitionEndType.never;
   RepetitionEndType get customRepetitionEndType => _customRepetitionEndType;
 
-  int? _customRepetitionDuration;
-  int? get customRepetitionDuration => _customRepetitionDuration;
+  int _customRepetitionDuration = 1;
+  int get customRepetitionDuration => _customRepetitionDuration;
   int? _customRepetitionEndTypeOccurences;
   int? get customRepetitionEndTypeOccurences => _customRepetitionEndTypeOccurences;
   DateTime? _customRepetitionEndTypeStopDate;
@@ -136,7 +136,7 @@ class NewTaskModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCustomRepetitionDuration(int? duration) {
+  void setCustomRepetitionDuration(int duration) {
     _customRepetitionDuration = duration;
   }
 }

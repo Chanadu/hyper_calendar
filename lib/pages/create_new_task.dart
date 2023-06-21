@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../util/create_task/basic/basic_information_tile.dart';
 import '../util/create_task/date/date_input_list_tile.dart';
-import '../util/create_task/new_task_model.dart';
+import '../util/new_task_model.dart';
 import '../util/holder.dart';
 
 class CreateNewTask extends StatelessWidget {

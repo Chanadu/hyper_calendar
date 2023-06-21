@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:hyper_calendar/util/create_task/new_task_model.dart';
+import 'package:hyper_calendar/util/new_task_model.dart';
 import 'package:provider/provider.dart';
 
 class ColorSelector extends StatefulWidget {

@@ -1,6 +1,9 @@
+import 'dart:html';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
+import 'package:hyper_calendar/util/create_task/enums/reptition_end_type.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../mongo_db.dart';
@@ -72,6 +75,15 @@ class _TasksHolderState extends State<TasksHolder> {
         case RepetitionTypes.custom:
           CustomRepetitionTypes customRepetitionType = CustomRepetitionTypes.values.byName((task['repetition']['custom']['type'] as String).split('.')[1]);
           int duration = task['repetition']['custom']['duration'] as int;
+
+          RepetitionEndType endType = RepetitionEndType.values.byName((task['repetition']['custom']['end']['type'] as String).split('.')[1]);
+
+          switch (endType) {
+            case RepetitionEndType.never:
+              break;
+            case RepetitionEndType.after:
+              
+          }
 
           switch (customRepetitionType) {
             case CustomRepetitionTypes.days:
