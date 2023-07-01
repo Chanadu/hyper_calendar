@@ -49,7 +49,7 @@ class MainCalendar extends StatefulWidget {
 class _MainCalendarState extends State<MainCalendar> {
   List<String> weekdaysList = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
   DateTime currentMonthYearDate = DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime? selectedDate;
+  DateTime selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +65,17 @@ class _MainCalendarState extends State<MainCalendar> {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 2.0 / 3.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          currentMonthYearDate = DateTime(currentMonthYearDate.year, currentMonthYearDate.month - 1, 1);
-                        });
+                        setState(
+                          () {
+                            currentMonthYearDate = DateTime(currentMonthYearDate.year, currentMonthYearDate.month - 1, 1);
+                          },
+                        );
                       },
                       icon: const Icon(Icons.arrow_left_rounded),
                       color: Theme.of(context).colorScheme.primary,
@@ -136,7 +139,10 @@ class _MainCalendarState extends State<MainCalendar> {
                     for (int i = 1; i <= 42; i++)
                       Container(
                         decoration: BoxDecoration(
-                          border: selectedDate != null && i > calendarWeekStartIndex && i < numberOfDaysInMonth + 1 + calendarWeekStartIndex && i - calendarWeekStartIndex == selectedDate!.day
+                          border: i > calendarWeekStartIndex &&
+                                  i < numberOfDaysInMonth + 1 + calendarWeekStartIndex &&
+                                  i - calendarWeekStartIndex == selectedDate.day &&
+                                  DateTime(selectedDate.year, selectedDate.month, 1).isAtSameMomentAs(currentMonthYearDate)
                               ? Border.all(color: Theme.of(context).colorScheme.primary)
                               : Border.all(color: Theme.of(context).colorScheme.primaryContainer),
                           borderRadius: BorderRadius.circular(16),
@@ -148,10 +154,10 @@ class _MainCalendarState extends State<MainCalendar> {
                                       width: double.infinity,
                                       height: double.infinity,
                                       decoration: BoxDecoration(
-                                        border: selectedDate != null &&
-                                                i > calendarWeekStartIndex &&
-                                                i < numberOfDaysInMonth + 1 + calendarWeekStartIndex &&
-                                                i - calendarWeekStartIndex == selectedDate!.day
+                                        border: i > calendarWeekStartIndex &&
+                                                i < numberOfDaysInMonth + calendarWeekStartIndex + 1 &&
+                                                i - calendarWeekStartIndex == selectedDate.day &&
+                                                DateTime(selectedDate.year, selectedDate.month, 1).isAtSameMomentAs(currentMonthYearDate)
                                             ? Border.all(color: Theme.of(context).colorScheme.primary)
                                             : Border.all(color: Theme.of(context).colorScheme.primaryContainer),
                                         borderRadius: BorderRadius.circular(16),

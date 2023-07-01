@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/util/create_task/enums/custom_repetition_types.dart';
-import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
+import 'package:hyper_calendar/util/enums/custom_repetition_types.dart';
+import 'package:hyper_calendar/util/enums/repetition_types.dart';
 import 'package:provider/provider.dart';
 
-import '../enums/reptition_end_type.dart';
+import '../../enums/reptition_end_type.dart';
 import '../../new_task_model.dart';
 import 'dialog_repetition_dropdown_menu_button.dart';
 import 'number_input.dart';
@@ -54,6 +54,7 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
 
     return SimpleDialog(
       title: const Text('Custom Repetition Selector'),
+      contentPadding: const EdgeInsets.all(32),
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -167,9 +168,17 @@ class _CustomRepetitionDialogState extends State<CustomRepetitionDialog> {
                         },
                         startingNumber: Provider.of<NewTaskModel>(context, listen: false).customRepetitionEndTypeOccurences ?? 1,
                       ),
-                      Text(
-                        'occurences',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Column(
+                        children: [
+                          Text(
+                            'occurences ${Provider.of<NewTaskModel>(context, listen: true).customRepetitionType == CustomRepetitionTypes.weeks ? '(Counts every week)' : ''}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          // Text(
+                          //   Provider.of<NewTaskModel>(context, listen: true).customRepetitionType == CustomRepetitionTypes.weeks ? '(Counts every week)' : '',
+                          //   style: Theme.of(context).textTheme.bodyMedium,
+                          // ),
+                        ],
                       ),
                     ],
                   ),

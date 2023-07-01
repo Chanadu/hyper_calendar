@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/mongo_db.dart';
-import 'package:hyper_calendar/pages/main_page.dart';
+import 'package:hyper_calendar/util/screen_holder.dart';
 import 'package:hyper_calendar/util/new_task_model.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   MongoDB.start();
 
   runApp(
@@ -38,12 +38,13 @@ class MyApp extends StatelessWidget {
     displayLarge: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36.0),
     bodyMedium: TextStyle(fontSize: 24.0),
-    displayMedium: TextStyle(fontSize: 36.0),
+    bodyLarge: TextStyle(fontSize: 32.0),
+    displayMedium: TextStyle(fontSize: 34.0),
     displaySmall: TextStyle(fontSize: 32.0),
     labelMedium: TextStyle(fontSize: 32.0),
     titleMedium: TextStyle(fontSize: 36.0),
   );
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
         ),
         dialogBackgroundColor: colorScheme.primaryContainer,
       ),
-      home: const MainPage(),
+      //home: const MainPage(),
+      home: const ScreenHolder(),
     );
   }
 }

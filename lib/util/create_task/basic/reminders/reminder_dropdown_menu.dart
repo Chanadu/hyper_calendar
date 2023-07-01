@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../enums/reminder_types.dart';
+import '../../../enums/reminder_types.dart';
 import '../../../new_task_model.dart';
 
 class ReminderDropdownMenu extends StatefulWidget {

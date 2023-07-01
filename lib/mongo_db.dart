@@ -1,25 +1,34 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import 'sensitive-info/mongo_db_info.dart';
-import 'util/create_task/enums/custom_repetition_types.dart';
-import 'util/create_task/enums/reminder_types.dart';
-import 'util/create_task/enums/repetition_types.dart';
-import 'util/create_task/enums/reptition_end_type.dart';
+import 'util/enums/custom_repetition_types.dart';
+import 'util/enums/reminder_types.dart';
+import 'util/enums/repetition_types.dart';
+import 'util/enums/reptition_end_type.dart';
 
 class MongoDB {
-  static late Db db;
-  static late DbCollection coll;
+  static Future<Db>? db;
+  static DbCollection? coll;
+
+  static Future<Db>? getDb() {
+    if (coll == null || db == null) {
+      return null;
+    }
+    return db;
+  }
 
   static void start() async {
-    db = await Db.create(MongoDBInfo.connectionURL);
-    await db.open();
-    coll = db.collection(MongoDBInfo.collectionName);
+    db = Db.create(MongoDBInfo.connectionURL);
+    (await db)!.open();
+    coll = (await db!).collection(MongoDBInfo.collectionName);
   }
 
   static Future<String> insert(MongoDbModel model) async {
     try {
-      WriteResult result = await coll.insertOne(model.toJSON());
+      WriteResult result = await coll!.insertOne(model.toJSON());
       if (result.isSuccess) {
         return 'Successfully Added Event!';
       } else {
@@ -135,4 +144,13 @@ class MongoDbModel {
           },
         },
       };
+}
+
+extension FutureExtension<T> on Future<T> {
+  /// Checks if the future has returned a value, using a Completer.
+  bool isCompleted() {
+    final completer = Completer<T>();
+    then(completer.complete).catchError(completer.completeError);
+    return completer.isCompleted;
+  }
 }

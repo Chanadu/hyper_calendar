@@ -1,14 +1,13 @@
-import 'dart:html';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/util/create_task/enums/repetition_types.dart';
-import 'package:hyper_calendar/util/create_task/enums/reptition_end_type.dart';
+import 'package:hyper_calendar/util/enums/repetition_types.dart';
+import 'package:hyper_calendar/util/enums/reptition_end_type.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../mongo_db.dart';
-import '../create_task/enums/custom_repetition_types.dart';
+import '../enums/custom_repetition_types.dart';
 import '../holder.dart';
+import 'task.dart';
 
 class TasksHolder extends StatefulWidget {
   const TasksHolder({
@@ -16,7 +15,7 @@ class TasksHolder extends StatefulWidget {
     required this.selectedDate,
   });
 
-  final DateTime? selectedDate;
+  final DateTime selectedDate;
 
   @override
   State<TasksHolder> createState() => _TasksHolderState();
@@ -26,9 +25,17 @@ class _TasksHolderState extends State<TasksHolder> {
   List<Map<String, dynamic>>? tasks;
   int tasksLength = 0;
 
-  void findTasks() async {
+  void findTasks(DateTime date) async {
     List<Map<String, dynamic>> currentTasks = [];
-    List<Map<String, dynamic>> holder = await MongoDB.coll.find().toList();
+    List<Map<String, dynamic>>? holder;
+    do {
+      try {
+        holder = await MongoDB.coll!.find().toList();
+      } catch (_) {
+        await Future.delayed(const Duration(milliseconds: 10));
+      }
+    } while (holder == null);
+
     for (int i = 0; i < holder.length; i++) {
       Map<String, dynamic> task = holder[i];
       DateTime startDate = DateTime(
@@ -42,11 +49,11 @@ class _TasksHolderState extends State<TasksHolder> {
         task['end']['date']['day'] as int,
       );
 
-      if (widget.selectedDate!.compareTo(startDate) >= 0 && widget.selectedDate!.compareTo(endDate) <= 0) {
+      if (date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0) {
         currentTasks.add(task);
         continue;
       }
-      if (widget.selectedDate!.compareTo(startDate) < 0) {
+      if (date.compareTo(startDate) < 0) {
         continue;
       }
 
@@ -58,17 +65,17 @@ class _TasksHolderState extends State<TasksHolder> {
           currentTasks.add(task);
           break;
         case RepetitionTypes.weekly:
-          if (widget.selectedDate!.weekday == startDate.weekday) {
+          if (date.weekday == startDate.weekday) {
             currentTasks.add(task);
           }
           break;
         case RepetitionTypes.monthly:
-          if (widget.selectedDate!.day == startDate.day) {
+          if (date.day == startDate.day) {
             currentTasks.add(task);
           }
           break;
         case RepetitionTypes.yearly:
-          if (DateTime(1, widget.selectedDate!.month, widget.selectedDate!.day).compareTo(DateTime(1, startDate.month, startDate.day)) == 0) {
+          if (DateTime(1, date.month, date.day).isAtSameMomentAs(DateTime(1, startDate.month, startDate.day))) {
             currentTasks.add(task);
           }
           break;
@@ -81,13 +88,55 @@ class _TasksHolderState extends State<TasksHolder> {
           switch (endType) {
             case RepetitionEndType.never:
               break;
+            case RepetitionEndType.on:
+              DateTime endingDate = DateTime(
+                task['repetition']['custom']['end']['date']['year'] as int,
+                task['repetition']['custom']['end']['date']['month'] as int,
+                task['repetition']['custom']['end']['date']['day'] as int,
+              );
+              if (date.isAfter(endingDate)) {
+                continue;
+              }
+              break;
             case RepetitionEndType.after:
-              
+              int endOccurences = task['repetition']['custom']['end']['occurences'] as int;
+              switch (customRepetitionType) {
+                case CustomRepetitionTypes.days:
+                  if (((Jiffy.parseFromDateTime(date).dayOfYear - Jiffy.parseFromDateTime(startDate).dayOfYear) / duration) + 1 > endOccurences) {
+                    continue;
+                  }
+                  break;
+                case CustomRepetitionTypes.weeks:
+                  //JUST THIS ONE LEFT
+                  List<Days> days = [];
+                  task['repetition']['custom']['dayList']['sunday'] as bool ? days.add(Days.sunday) : null;
+                  task['repetition']['custom']['dayList']['monday'] as bool ? days.add(Days.monday) : null;
+                  task['repetition']['custom']['dayList']['tuesday'] as bool ? days.add(Days.tuesday) : null;
+                  task['repetition']['custom']['dayList']['wednesday'] as bool ? days.add(Days.wednesday) : null;
+                  task['repetition']['custom']['dayList']['thursday'] as bool ? days.add(Days.thursday) : null;
+                  task['repetition']['custom']['dayList']['friday'] as bool ? days.add(Days.friday) : null;
+                  task['repetition']['custom']['dayList']['saturday'] as bool ? days.add(Days.saturday) : null;
+
+                  if (((Jiffy.parseFromDateTime(date).weekOfYear - Jiffy.parseFromDateTime(startDate).weekOfYear) / duration) + 1 > endOccurences) {
+                    continue;
+                  }
+                  break;
+                case CustomRepetitionTypes.months:
+                  if (((Jiffy.parseFromDateTime(date).month - Jiffy.parseFromDateTime(startDate).month) / duration) + 1 > endOccurences) {
+                    continue;
+                  }
+                  break;
+                case CustomRepetitionTypes.years:
+                  if (((Jiffy.parseFromDateTime(date).year - Jiffy.parseFromDateTime(startDate).year) / duration + 1) > endOccurences) {
+                    continue;
+                  }
+                  break;
+              }
           }
 
           switch (customRepetitionType) {
             case CustomRepetitionTypes.days:
-              if ((Jiffy.parseFromDateTime(widget.selectedDate!).dayOfYear - Jiffy.parseFromDateTime(startDate).dayOfYear) % duration == 0) {
+              if ((Jiffy.parseFromDateTime(date).dayOfYear - Jiffy.parseFromDateTime(startDate).dayOfYear) % duration == 0) {
                 currentTasks.add(task);
               }
               break;
@@ -101,18 +150,17 @@ class _TasksHolderState extends State<TasksHolder> {
               task['repetition']['custom']['dayList']['friday'] as bool ? days.add(Days.friday) : null;
               task['repetition']['custom']['dayList']['saturday'] as bool ? days.add(Days.saturday) : null;
 
-              if (days.contains(Days.values[widget.selectedDate!.weekday % 7]) &&
-                  (Jiffy.parseFromDateTime(widget.selectedDate!).weekOfYear - Jiffy.parseFromDateTime(startDate).weekOfYear) % duration == 0) {
+              if (days.contains(Days.values[date.weekday % 7]) && (Jiffy.parseFromDateTime(date).weekOfYear - Jiffy.parseFromDateTime(startDate).weekOfYear) % duration == 0) {
                 currentTasks.add(task);
               }
               break;
             case CustomRepetitionTypes.months:
-              if ((Jiffy.parseFromDateTime(widget.selectedDate!).month - Jiffy.parseFromDateTime(startDate).month) % duration == 0) {
+              if ((Jiffy.parseFromDateTime(date).month - Jiffy.parseFromDateTime(startDate).month) % duration == 0) {
                 currentTasks.add(task);
               }
               break;
             case CustomRepetitionTypes.years:
-              if ((Jiffy.parseFromDateTime(widget.selectedDate!).year - Jiffy.parseFromDateTime(startDate).year) % duration == 0) {
+              if ((Jiffy.parseFromDateTime(date).year - Jiffy.parseFromDateTime(startDate).year) % duration == 0) {
                 currentTasks.add(task);
               }
               break;
@@ -121,9 +169,7 @@ class _TasksHolderState extends State<TasksHolder> {
       }
     }
 
-    if (widget.selectedDate != null) {
-      tasksLength = currentTasks.length;
-    }
+    tasksLength = currentTasks.length;
 
     const DeepCollectionEquality().equals(currentTasks, tasks)
         ? null
@@ -136,10 +182,7 @@ class _TasksHolderState extends State<TasksHolder> {
 
   @override
   Widget build(BuildContext context) {
-    print("rebuild");
-    if (widget.selectedDate != null) {
-      findTasks();
-    }
+    findTasks(widget.selectedDate);
     return Holder(
       width: MediaQuery.of(context).size.width * 2.0 / 3.0,
       padding: const EdgeInsets.all(32.0),
@@ -147,51 +190,30 @@ class _TasksHolderState extends State<TasksHolder> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                widget.selectedDate == null ? 'Pick a Date to view the Tasks' : "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(widget.selectedDate!)}:",
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
-                  decoration: TextDecoration.underline,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 2.0 / 3.0,
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  "Tasks on ${DateFormat('EEEE MMM d, yyyy').format(widget.selectedDate)}:",
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 32),
-          for (int i = 0; i < tasksLength; i++) Task(eventName: tasks![i]['eventName']),
-          widget.selectedDate == null
-              ? const SizedBox.shrink()
-              : tasksLength == 0
-                  ? Task(eventName: "There are no event on ${DateFormat('MMM d').format(widget.selectedDate!)}.")
-                  : const SizedBox.shrink(),
+          for (int i = 0; i < tasksLength; i++)
+            Task(
+              date: widget.selectedDate,
+              task: tasks![i],
+            ),
+          tasksLength == 0 ? Task(date: widget.selectedDate) : const SizedBox.shrink(),
         ],
-      ),
-    );
-  }
-}
-
-class Task extends StatelessWidget {
-  const Task({
-    super.key,
-    required this.eventName,
-  });
-
-  final String eventName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Theme.of(context).colorScheme.primary),
-      ),
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      child: Text(
-        '    • $eventName',
-        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }

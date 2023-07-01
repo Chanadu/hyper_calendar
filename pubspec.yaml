@@ -38,6 +38,7 @@ dependencies:
   mongo_dart: ^0.9.1
   collection: ^1.17.1
   jiffy: ^6.2.1
+  fixnum: ^1.1.0
 
 dev_dependencies:
   flutter_test:
