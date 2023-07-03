@@ -4,9 +4,9 @@ import 'package:hyper_calendar/util/enums/repetition_types.dart';
 import 'package:hyper_calendar/util/enums/reptition_end_type.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
-import '../../mongo_db.dart';
-import '../enums/custom_repetition_types.dart';
-import '../holder.dart';
+import '../../../mongo_db.dart';
+import '../../enums/custom_repetition_types.dart';
+import '../../holder.dart';
 import 'task.dart';
 
 class TasksHolder extends StatefulWidget {
@@ -24,6 +24,7 @@ class TasksHolder extends StatefulWidget {
 class _TasksHolderState extends State<TasksHolder> {
   List<Map<String, dynamic>>? tasks;
   int tasksLength = 0;
+  bool loading = true;
 
   void findTasks(DateTime date) async {
     List<Map<String, dynamic>> currentTasks = [];
@@ -35,7 +36,6 @@ class _TasksHolderState extends State<TasksHolder> {
         await Future.delayed(const Duration(milliseconds: 10));
       }
     } while (holder == null);
-
     for (int i = 0; i < holder.length; i++) {
       Map<String, dynamic> task = holder[i];
       DateTime startDate = DateTime(
@@ -176,6 +176,7 @@ class _TasksHolderState extends State<TasksHolder> {
         : setState(
             () {
               tasks = currentTasks;
+              loading = false;
             },
           );
   }
@@ -212,7 +213,11 @@ class _TasksHolderState extends State<TasksHolder> {
               date: widget.selectedDate,
               task: tasks![i],
             ),
-          tasksLength == 0 ? Task(date: widget.selectedDate) : const SizedBox.shrink(),
+          loading
+              ? Task(date: widget.selectedDate, loading: true)
+              : tasksLength == 0
+                  ? Task(date: widget.selectedDate)
+                  : const SizedBox.shrink(),
         ],
       ),
     );

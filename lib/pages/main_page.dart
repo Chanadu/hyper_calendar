@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hyper_calendar/pages/create_new_task.dart';
 import 'package:intl/intl.dart';
 import '../util/holder.dart';
-import '../util/main_page/tasks_holder.dart';
+import '../util/main_page/tasks/tasks_holder.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,7 @@ class MainPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => CreateNewTask(),
             ),
-          );
+          ).then((_) => setState(() {}));
         },
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add),
@@ -97,9 +102,11 @@ class _MainCalendarState extends State<MainCalendar> {
                     ),
                     IconButton(
                       onPressed: () {
-                        setState(() {
-                          currentMonthYearDate = DateTime(currentMonthYearDate.year, currentMonthYearDate.month + 1, 1);
-                        });
+                        setState(
+                          () {
+                            currentMonthYearDate = DateTime(currentMonthYearDate.year, currentMonthYearDate.month + 1, 1);
+                          },
+                        );
                       },
                       icon: const Icon(Icons.arrow_right_rounded),
                       color: Theme.of(context).colorScheme.primary,
