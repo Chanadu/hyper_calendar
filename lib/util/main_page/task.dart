@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 import '../create_task/date/small_icon_button.dart';
 import '../enums/reminder_types.dart';
+import '../enums/repetition_types.dart';
 
-class Task extends StatelessWidget {
+class Task extends StatefulWidget {
   const Task({
     super.key,
     required this.date,
@@ -16,21 +17,114 @@ class Task extends StatelessWidget {
   final Map<String, dynamic>? task;
 
   @override
+  State<Task> createState() => _TaskState();
+}
+
+class _TaskState extends State<Task> {
+  @override
   Widget build(BuildContext context) {
+    Future<void> showDeleteDialog() {
+      return showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            bool deleteAllOccurences = false;
+            return StatefulBuilder(
+              builder: (BuildContext ontext, void Function(void Function()) setState) {
+                return AlertDialog(
+                  title: const Text('Delete Task'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          'THIS IS NOT REVERTABLE!',
+                          style: TextStyle(
+                            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        //ReminderTypes.values.byName(widget.task!['reminders']['second'].split('.')[1]);
+                        RepetitionTypes.values.byName((widget.task!['repetition']['state'] as String).split('.')[1]) == RepetitionTypes.doesNotRepeat
+                            ? const SizedBox.shrink()
+                            : Row(
+                                children: [
+                                  Text(
+                                    'Apply to all repetitions of the task: ',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Switch.adaptive(
+                                    value: deleteAllOccurences,
+                                    onChanged: (bool value) {
+                                      setState(
+                                        () {
+                                          deleteAllOccurences = value;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                                ),
+                                padding: const EdgeInsets.all(16.0),
+                              ),
+                              child: Text(
+                                'Cancel',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            ElevatedButton(
+                              onPressed: () => null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(color: Theme.of(context).colorScheme.error),
+                                ),
+                                padding: const EdgeInsets.all(16.0),
+                              ),
+                              child: Text(
+                                'Delete',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          });
+    }
+
     Widget taskInnerWidget;
     Color containerBorderColor = Theme.of(context).colorScheme.primary;
-    if (task == null) {
+    if (widget.task == null) {
       taskInnerWidget = Text(
-        '    • There are no event on ${DateFormat('MMM d').format(date)}.',
+        '    • There are no event on ${DateFormat('MMM d').format(widget.date)}.',
         style: Theme.of(context).textTheme.bodyMedium,
       );
     } else {
-      String eventName = task!['eventName'] as String;
-      String description = task!['description'] as String;
-      TimeOfDay startTime = TimeOfDay(hour: task!['start']['time']['hour'] as int, minute: task!['start']['time']['minute'] as int);
-      TimeOfDay endTime = TimeOfDay(hour: task!['end']['time']['hour'] as int, minute: task!['end']['time']['minute'] as int);
-      ReminderTypes? reminderOne = ReminderTypes.values.byName(task!['reminders']['first'].split('.')[1]);
-      ReminderTypes? reminderTwo = ReminderTypes.values.byName(task!['reminders']['second'].split('.')[1]);
+      String eventName = widget.task!['eventName'] as String;
+      String description = widget.task!['description'] as String;
+      TimeOfDay startTime = TimeOfDay(hour: widget.task!['start']['time']['hour'] as int, minute: widget.task!['start']['time']['minute'] as int);
+      TimeOfDay endTime = TimeOfDay(hour: widget.task!['end']['time']['hour'] as int, minute: widget.task!['end']['time']['minute'] as int);
+      ReminderTypes? reminderOne = ReminderTypes.values.byName(widget.task!['reminders']['first'].split('.')[1]);
+      ReminderTypes? reminderTwo = ReminderTypes.values.byName(widget.task!['reminders']['second'].split('.')[1]);
 
       String reminderText = reminderTypesToString(reminderOne).toLowerCase() == 'no reminder' && reminderTypesToString(reminderTwo).toLowerCase() == 'no reminder'
           ? 'No Reminders'
@@ -40,7 +134,7 @@ class Task extends StatelessWidget {
                   ? 'Reminder at ${reminderTypesToString(reminderOne).toLowerCase()}'
                   : 'Reminders at ${reminderTypesToString(reminderOne).toLowerCase()} and ${reminderTypesToString(reminderTwo).toLowerCase()}';
 
-      containerBorderColor = Color((task!['color'] as Int64).toInt());
+      containerBorderColor = Color((widget.task!['color'] as Int64).toInt());
       taskInnerWidget = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,7 +146,7 @@ class Task extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               SmallIconButton(onPressed: () {}, icon: Icons.edit_rounded),
-              SmallIconButton(onPressed: () {}, icon: Icons.delete_rounded),
+              SmallIconButton(onPressed: () => showDeleteDialog(), icon: Icons.delete_rounded),
             ],
           ),
           const SizedBox(height: 12),
