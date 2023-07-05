@@ -7,6 +7,7 @@ import 'package:hyper_calendar/util/enums/reptition_end_type.dart';
 import 'package:hyper_calendar/util/main_page/time_of_day_compare_to.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../util/create_task/basic/basic_information_tile.dart';
 import '../util/create_task/date/date_input_list_tile.dart';
 import '../util/new_task_model.dart';
@@ -80,6 +81,7 @@ class CreateNewTaskPage extends StatelessWidget {
                             value.setDescription(descriptionController.text);
                             String response = await MongoDB.insertEvent(
                               MongoDbEventModel(
+                                userId: usernameId!,
                                 eventName: value.eventName,
                                 description: value.description,
                                 color: value.color,

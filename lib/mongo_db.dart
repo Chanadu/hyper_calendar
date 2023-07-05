@@ -57,6 +57,7 @@ class MongoDB {
 
 class MongoDbEventModel {
   late ObjectId id;
+  late ObjectId userId;
   late String eventName;
   late String description;
   late Color color;
@@ -82,6 +83,7 @@ class MongoDbEventModel {
 
   MongoDbEventModel({
     ObjectId? objectId,
+    required this.userId,
     required this.eventName,
     required this.description,
     required this.color,
@@ -104,6 +106,7 @@ class MongoDbEventModel {
 
   Map<String, dynamic> toJSON() => {
         '_id': id,
+        'userId': userId,
         'eventName': eventName,
         'description': description,
         'color': color.value,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/mongo_db.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo_db;
 
+import '../main.dart';
 import '../util/create_task/basic/text_input_list_tile.dart';
 
 class SignInPage extends StatefulWidget {
@@ -132,13 +134,19 @@ class _SignInPageState extends State<SignInPage> {
                           await Future.delayed(const Duration(milliseconds: 10));
                         }
                       } while (holder == null);
-                      if (!await MongoDB.authenticationColl!.find(
+
+                      Map<String, dynamic>? auth = await MongoDB.authenticationColl!.findOne(
                         {
                           'username': usernameController.text,
                           'password': passwordController.text,
                         },
-                      ).isEmpty) {
+                      );
+
+                      if (!(auth == null || auth.isEmpty)) {
                         widget.setSignIn(true);
+
+                        usernameId = auth['_id'] as mongo_db.ObjectId;
+
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

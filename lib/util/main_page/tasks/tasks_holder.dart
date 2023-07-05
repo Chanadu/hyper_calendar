@@ -5,6 +5,8 @@ import 'package:hyper_calendar/util/enums/reptition_end_type.dart';
 import 'package:hyper_calendar/util/main_page/time_of_day_compare_to.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo_db;
+import '../../../main.dart';
 import '../../../mongo_db.dart';
 import '../../enums/custom_repetition_types.dart';
 import '../../holder.dart';
@@ -39,6 +41,11 @@ class _TasksHolderState extends State<TasksHolder> {
     } while (holder == null);
     for (int i = 0; i < holder.length; i++) {
       Map<String, dynamic> task = holder[i];
+
+      if (task['userId'] as mongo_db.ObjectId != usernameId!) {
+        continue;
+      }
+
       DateTime startDate = DateTime(
         task['start']['date']['year'] as int,
         task['start']['date']['month'] as int,
@@ -144,7 +151,7 @@ class _TasksHolderState extends State<TasksHolder> {
             case CustomRepetitionTypes.weeks:
               List<Days> days = [];
               task['repetition']['custom']['dayList']['sunday'] as bool ? days.add(Days.sunday) : null;
-              task['repetition']['custom']['dayList']['monday'] as bool ? days.add(Days.monday) : null;
+              task['repetition']['custom']['damongo_dbyList']['monday'] as bool ? days.add(Days.monday) : null;
               task['repetition']['custom']['dayList']['tuesday'] as bool ? days.add(Days.tuesday) : null;
               task['repetition']['custom']['dayList']['wednesday'] as bool ? days.add(Days.wednesday) : null;
               task['repetition']['custom']['dayList']['thursday'] as bool ? days.add(Days.thursday) : null;
