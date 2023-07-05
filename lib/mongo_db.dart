@@ -11,10 +11,11 @@ import 'util/enums/reptition_end_type.dart';
 
 class MongoDB {
   static Future<Db>? db;
-  static DbCollection? coll;
+  static DbCollection? eventsColl;
+  static DbCollection? authenticationColl;
 
   static Future<Db>? getDb() {
-    if (coll == null || db == null) {
+    if (eventsColl == null || db == null) {
       return null;
     }
     return db;
@@ -23,12 +24,13 @@ class MongoDB {
   static void start() async {
     db = Db.create(MongoDBInfo.connectionURL);
     (await db)!.open();
-    coll = (await db!).collection(MongoDBInfo.collectionName);
+    eventsColl = (await db!).collection(MongoDBInfo.eventCollectionName);
+    authenticationColl = (await db!).collection(MongoDBInfo.authenticationCollectionName);
   }
 
-  static Future<String> insert(MongoDbModel model) async {
+  static Future<String> insertEvent(MongoDbEventModel model) async {
     try {
-      WriteResult result = await coll!.insertOne(model.toJSON());
+      WriteResult result = await eventsColl!.insertOne(model.toJSON());
       if (result.isSuccess) {
         return 'Successfully Added Event!';
       } else {
@@ -38,9 +40,22 @@ class MongoDB {
       return e.toString();
     }
   }
+
+  static Future<String> insertAuthentication(MongoDbAuthenticationModel model) async {
+    try {
+      WriteResult result = await authenticationColl!.insertOne(model.toJSON());
+      if (result.isSuccess) {
+        return 'Successfully Added Account!';
+      } else {
+        return 'Something went wrong. Try again later.';
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
 }
 
-class MongoDbModel {
+class MongoDbEventModel {
   late ObjectId id;
   late String eventName;
   late String description;
@@ -65,7 +80,7 @@ class MongoDbModel {
   late int? customRepetitionEndTypeOccurences;
   late DateTime? customRepetitionEndTypeStopDate;
 
-  MongoDbModel({
+  MongoDbEventModel({
     ObjectId? objectId,
     required this.eventName,
     required this.description,
@@ -143,5 +158,24 @@ class MongoDbModel {
             }
           },
         },
+      };
+}
+
+class MongoDbAuthenticationModel {
+  late ObjectId id;
+  late String username;
+  late String password;
+  MongoDbAuthenticationModel({
+    ObjectId? id,
+    required this.username,
+    required this.password,
+  }) {
+    this.id = id ?? ObjectId();
+  }
+
+  Map<String, dynamic> toJSON() => {
+        '_id': id,
+        'username': username,
+        'password': password,
       };
 }

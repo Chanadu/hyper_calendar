@@ -32,7 +32,7 @@ class _TasksHolderState extends State<TasksHolder> {
     List<Map<String, dynamic>>? holder;
     do {
       try {
-        holder = await MongoDB.coll!.find().toList();
+        holder = await MongoDB.eventsColl!.find().toList();
       } catch (_) {
         await Future.delayed(const Duration(milliseconds: 10));
       }

@@ -90,7 +90,7 @@ class _TaskState extends State<Task> {
                           const SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () async {
-                              await MongoDB.coll!.remove({'_id': widget.task!['_id'] as mongo_db.ObjectId});
+                              await MongoDB.eventsColl!.remove({'_id': widget.task!['_id'] as mongo_db.ObjectId});
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Center(

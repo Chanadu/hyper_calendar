@@ -12,8 +12,8 @@ import '../util/create_task/date/date_input_list_tile.dart';
 import '../util/new_task_model.dart';
 import '../util/holder.dart';
 
-class CreateNewTask extends StatelessWidget {
-  CreateNewTask({
+class CreateNewTaskPage extends StatelessWidget {
+  CreateNewTaskPage({
     super.key,
     this.task,
   });
@@ -78,8 +78,8 @@ class CreateNewTask extends StatelessWidget {
                         : () async {
                             value.setEventName(nameController.text);
                             value.setDescription(descriptionController.text);
-                            String response = await MongoDB.insert(
-                              MongoDbModel(
+                            String response = await MongoDB.insertEvent(
+                              MongoDbEventModel(
                                 eventName: value.eventName,
                                 description: value.description,
                                 color: value.color,

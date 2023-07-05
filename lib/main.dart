@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/mongo_db.dart';
-import 'package:hyper_calendar/util/screen_holder.dart';
+import 'package:hyper_calendar/util/page_holder.dart';
 import 'package:hyper_calendar/util/new_task_model.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   final ColorScheme colorScheme = const ColorScheme(
     brightness: Brightness.dark,
-    primary: Colors.blue,
+    primary: Color.fromRGBO(33, 150, 243, 1),
     onPrimary: Colors.white,
     secondary: Colors.blueAccent,
     onSecondary: Colors.white,
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         dialogBackgroundColor: colorScheme.primaryContainer,
       ),
       //home: const MainPage(),
-      home: const ScreenHolder(),
+      home: const PageHolder(),
     );
   }
 }

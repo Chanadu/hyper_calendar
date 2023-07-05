@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/pages/create_new_task.dart';
+import 'package:hyper_calendar/pages/create_new_task_page.dart';
 import 'package:intl/intl.dart';
 import '../util/holder.dart';
 import '../util/main_page/tasks/tasks_holder.dart';
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CreateNewTask(),
+              builder: (context) => CreateNewTaskPage(),
             ),
           ).then((_) => setState(() {}));
         },
