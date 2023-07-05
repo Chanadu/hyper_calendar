@@ -65,25 +65,25 @@ class MongoDbModel {
   late int? customRepetitionEndTypeOccurences;
   late DateTime? customRepetitionEndTypeStopDate;
 
-  MongoDbModel(
+  MongoDbModel({
     ObjectId? objectId,
-    this.eventName,
-    this.description,
-    this.color,
-    this.firstReminder,
-    this.secondReminder,
-    this.startDate,
-    this.startTime,
-    this.endDate,
-    this.endTime,
-    this.repetitionState,
-    this.customRepetitionType,
-    this.customRepetitionDayList,
-    this.customRepetitionEndType, [
+    required this.eventName,
+    required this.description,
+    required this.color,
+    required this.firstReminder,
+    required this.secondReminder,
+    required this.startDate,
+    required this.startTime,
+    required this.endDate,
+    required this.endTime,
+    required this.repetitionState,
+    required this.customRepetitionType,
+    required this.customRepetitionDayList,
+    required this.customRepetitionEndType,
     this.customRepetitionDuration,
     this.customRepetitionEndTypeOccurences,
     this.customRepetitionEndTypeStopDate,
-  ]) {
+  }) {
     id = objectId ?? ObjectId();
   }
 

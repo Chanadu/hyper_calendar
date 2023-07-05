@@ -25,14 +25,13 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  bool isDeleted = false;
   @override
   Widget build(BuildContext context) {
     Future<void> showDeleteDialog() {
       return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          bool deleteAllOccurences = false;
+          bool deleteAllOccurences = true;
           return StatefulBuilder(
             builder: (BuildContext ontext, void Function(void Function()) setState) {
               return AlertDialog(
@@ -134,16 +133,10 @@ class _TaskState extends State<Task> {
       ).then(
         (_) {
           setState(
-            () {
-              isDeleted = true;
-            },
+            () {},
           );
         },
       );
-    }
-
-    if (isDeleted) {
-      return const SizedBox.shrink();
     }
 
     Widget taskInnerWidget;

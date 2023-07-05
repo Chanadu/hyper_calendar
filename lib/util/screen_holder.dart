@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/pages/loading_screen.dart';
-import 'package:hyper_calendar/pages/main_page.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 import '../mongo_db.dart';
+import '../pages/main_page.dart';
 
 class ScreenHolder extends StatefulWidget {
   const ScreenHolder({super.key});

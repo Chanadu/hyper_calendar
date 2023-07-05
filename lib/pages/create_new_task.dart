@@ -13,10 +13,14 @@ import '../util/new_task_model.dart';
 import '../util/holder.dart';
 
 class CreateNewTask extends StatelessWidget {
-  CreateNewTask({super.key});
+  CreateNewTask({
+    super.key,
+    this.task,
+  });
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final Map<String, dynamic>? task;
 
   @override
   Widget build(BuildContext context) {
@@ -76,23 +80,22 @@ class CreateNewTask extends StatelessWidget {
                             value.setDescription(descriptionController.text);
                             String response = await MongoDB.insert(
                               MongoDbModel(
-                                null,
-                                value.eventName,
-                                value.description,
-                                value.color,
-                                value.firstReminder,
-                                value.secondReminder,
-                                value.startDate,
-                                value.startTimeOfDay,
-                                value.endDate,
-                                value.endTimeOfDay,
-                                value.repetitionState,
-                                value.customRepetitionType,
-                                value.customRepetitionDayList,
-                                value.customRepetitionEndType,
-                                value.customRepetitionDuration,
-                                value.customRepetitionEndTypeOccurences,
-                                value.customRepetitionEndTypeStopDate,
+                                eventName: value.eventName,
+                                description: value.description,
+                                color: value.color,
+                                firstReminder: value.firstReminder,
+                                secondReminder: value.secondReminder,
+                                startDate: value.startDate,
+                                startTime: value.startTimeOfDay,
+                                endDate: value.endDate,
+                                endTime: value.endTimeOfDay,
+                                repetitionState: value.repetitionState,
+                                customRepetitionType: value.customRepetitionType,
+                                customRepetitionDayList: value.customRepetitionDayList,
+                                customRepetitionEndType: value.customRepetitionEndType,
+                                customRepetitionDuration: value.customRepetitionDuration,
+                                customRepetitionEndTypeOccurences: value.customRepetitionEndTypeOccurences,
+                                customRepetitionEndTypeStopDate: value.customRepetitionEndTypeStopDate,
                               ),
                             );
                             if (context.mounted) {

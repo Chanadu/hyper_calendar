@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/util/enums/repetition_types.dart';
 import 'package:hyper_calendar/util/enums/reptition_end_type.dart';
+import 'package:hyper_calendar/util/main_page/time_of_day_compare_to.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../../mongo_db.dart';
@@ -170,6 +171,20 @@ class _TasksHolderState extends State<TasksHolder> {
     }
 
     tasksLength = currentTasks.length;
+
+    currentTasks.sort(
+      (a, b) {
+        return TimeOfDay(
+          hour: a['start']['time']['hour'] as int,
+          minute: a['start']['time']['minute'] as int,
+        ).compareTo(
+          TimeOfDay(
+            hour: b['start']['time']['hour'] as int,
+            minute: b['start']['time']['minute'] as int,
+          ),
+        );
+      },
+    );
 
     const DeepCollectionEquality().equals(currentTasks, tasks)
         ? null
