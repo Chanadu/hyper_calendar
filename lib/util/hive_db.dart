@@ -1,6 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveDB {
+  static HiveDB? _current;
+  static HiveDB get current {
+    _current ??= HiveDB();
+    return _current!;
+  }
+
   String username = '';
   String password = '';
 

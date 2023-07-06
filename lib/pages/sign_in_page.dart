@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hyper_calendar/util/mongo_db.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo_db;
 
 import '../main.dart';
 import '../util/create_task/basic/text_input_list_tile.dart';
+import '../util/hive_db.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({
@@ -21,8 +23,91 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  final _myBox = Hive.box('userAuthStore');
+  HiveDB db = HiveDB.current;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_myBox.get('username') == null || _myBox.get('password') == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+  }
+
+  void saveUsernamePassword({required String username, required String password}) {
+    db.username = username;
+    db.password = password;
+    db.updateDataBase();
+  }
+
+  void signIn() async {
+    List<Map<String, dynamic>>? holder;
+    do {
+      try {
+        holder = await MongoDB.authenticationColl!.find().toList();
+      } catch (_) {
+        await Future.delayed(const Duration(milliseconds: 10));
+      }
+    } while (holder == null);
+
+    Map<String, dynamic>? auth = await MongoDB.authenticationColl!.findOne(
+      {
+        'username': usernameController.text,
+        'password': passwordController.text,
+      },
+    );
+
+    if (!(auth == null || auth.isEmpty)) {
+      widget.setSignIn(true);
+
+      usernameId = auth['_id'] as mongo_db.ObjectId;
+      saveUsernamePassword(username: usernameController.text, password: passwordController.text);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(
+              child: Text(
+                'Sign in Successful!',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                ),
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          ),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(
+              child: Text(
+                'Incorrect Username or Password.',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                ),
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    usernameController.text = db.username;
+    passwordController.text = db.password;
+    if (db.username.isNotEmpty && db.password.isNotEmpty) {
+      signIn();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign In'),
@@ -126,61 +211,7 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () async {
-                      List<Map<String, dynamic>>? holder;
-                      do {
-                        try {
-                          holder = await MongoDB.authenticationColl!.find().toList();
-                        } catch (_) {
-                          await Future.delayed(const Duration(milliseconds: 10));
-                        }
-                      } while (holder == null);
-
-                      Map<String, dynamic>? auth = await MongoDB.authenticationColl!.findOne(
-                        {
-                          'username': usernameController.text,
-                          'password': passwordController.text,
-                        },
-                      );
-
-                      if (!(auth == null || auth.isEmpty)) {
-                        widget.setSignIn(true);
-
-                        usernameId = auth['_id'] as mongo_db.ObjectId;
-
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Center(
-                                child: Text(
-                                  'Sign in Successful!',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                    fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-                                  ),
-                                ),
-                              ),
-                              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                            ),
-                          );
-                        }
-                      } else {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Center(
-                                child: Text(
-                                  'Incorrect Username or Password.',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                    fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-                                  ),
-                                ),
-                              ),
-                              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                            ),
-                          );
-                        }
-                      }
+                      signIn();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.surface,

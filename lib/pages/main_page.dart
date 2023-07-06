@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hyper_calendar/main.dart';
 import 'package:hyper_calendar/pages/create_new_task_page.dart';
 import 'package:intl/intl.dart';
+import '../util/hive_db.dart';
 import '../util/holder.dart';
 import '../util/main_page/tasks/tasks_holder.dart';
 
@@ -48,7 +49,9 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Theme.of(context).colorScheme.surface,
                                     shape: RoundedRectangleBorder(
@@ -65,9 +68,11 @@ class _MainPageState extends State<MainPage> {
                                 const SizedBox(width: 8),
                                 ElevatedButton(
                                   onPressed: () {
+                                    HiveDB db = HiveDB.current;
+                                    db.createInitialData();
+                                    db.updateDataBase();
                                     widget.setSignIn(false);
                                     usernameId = null;
-                                    Navigator.pop(context);
                                     Navigator.pop(context);
                                   },
                                   style: ElevatedButton.styleFrom(
