@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo_db;
 import '../../../main.dart';
-import '../../../mongo_db.dart';
+import '../../mongo_db.dart';
 import '../../enums/custom_repetition_types.dart';
 import '../../holder.dart';
 import 'task.dart';

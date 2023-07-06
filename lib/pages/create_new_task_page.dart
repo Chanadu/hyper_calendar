@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/mongo_db.dart';
+import 'package:hyper_calendar/util/mongo_db.dart';
 import 'package:hyper_calendar/util/enums/custom_repetition_types.dart';
 import 'package:hyper_calendar/util/enums/reminder_types.dart';
 import 'package:hyper_calendar/util/enums/repetition_types.dart';

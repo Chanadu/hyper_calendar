@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import 'sensitive-info/mongo_db_info.dart';
-import 'util/enums/custom_repetition_types.dart';
-import 'util/enums/reminder_types.dart';
-import 'util/enums/repetition_types.dart';
-import 'util/enums/reptition_end_type.dart';
+import '../sensitive-info/mongo_db_info.dart';
+import 'enums/custom_repetition_types.dart';
+import 'enums/reminder_types.dart';
+import 'enums/repetition_types.dart';
+import 'enums/reptition_end_type.dart';
 
 class MongoDB {
   static Future<Db>? db;

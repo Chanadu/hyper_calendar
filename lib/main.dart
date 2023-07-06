@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hyper_calendar/mongo_db.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hyper_calendar/util/mongo_db.dart';
 import 'package:hyper_calendar/util/page_holder.dart';
 import 'package:hyper_calendar/util/new_task_model.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo_db;
 import 'package:provider/provider.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   MongoDB.start();
+  await Hive.initFlutter();
+  await Hive.openBox('userAuthStore');
 
   runApp(
     ChangeNotifierProvider(
