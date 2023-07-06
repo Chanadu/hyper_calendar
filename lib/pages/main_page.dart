@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../util/hive_db.dart';
 import '../util/holder.dart';
 import '../util/main_page/tasks/tasks_holder.dart';
+import '../util/mongo_db.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -19,8 +20,22 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  String? username;
+
+  void getUsername() async {
+    do {
+      try {
+        username = (await MongoDB.authenticationColl!.findOne({'_id': usernameId}))!['username'] as String;
+      } catch (_) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    } while (username == null);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUsername();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hyper Calendar'),
@@ -100,6 +115,18 @@ class _MainPageState extends State<MainPage> {
             );
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 32,
+              top: 4,
+            ),
+            child: Text(
+              username ?? '',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ),
+        ],
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),
