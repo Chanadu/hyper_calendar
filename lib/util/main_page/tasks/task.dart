@@ -90,22 +90,49 @@ class _TaskState extends State<Task> {
                           const SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () async {
-                              await MongoDB.eventsColl!.remove({'_id': widget.task!['_id'] as mongo_db.ObjectId});
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Center(
-                                    child: Text(
-                                      "Removed ${widget.task!['eventName']}.",
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onPrimary,
-                                        fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                              if (deleteAllOccurences) {
+                                await MongoDB.eventsColl!.remove({'_id': widget.task!['_id'] as mongo_db.ObjectId});
+                                await MongoDB.singleDeleteOccurencesColl!.remove({'eventId': widget.task!['_id'] as mongo_db.ObjectId});
+
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Center(
+                                      child: Text(
+                                        "Removed ${widget.task!['eventName']}.",
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.onPrimary,
+                                          fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                                ));
-                                Navigator.pop(context);
+                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                  ));
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                String result = await MongoDB.insertSingleDeleteOccurences(
+                                    MongoDbSingleDeleteOccurencesModel(
+                                      eventId: widget.task!['_id'],
+                                      date: widget.date,
+                                    ),
+                                    widget.task!['eventName']);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Center(
+                                      child: Text(
+                                        result,
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.onPrimary,
+                                          fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                  ));
+                                  Navigator.pop(context);
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

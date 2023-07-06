@@ -13,6 +13,7 @@ class MongoDB {
   static Future<Db>? db;
   static DbCollection? eventsColl;
   static DbCollection? authenticationColl;
+  static DbCollection? singleDeleteOccurencesColl;
 
   static Future<Db>? getDb() {
     if (eventsColl == null || db == null) {
@@ -26,6 +27,7 @@ class MongoDB {
     (await db)!.open();
     eventsColl = (await db!).collection(MongoDBInfo.eventCollectionName);
     authenticationColl = (await db!).collection(MongoDBInfo.authenticationCollectionName);
+    singleDeleteOccurencesColl = (await db!).collection(MongoDBInfo.singleDeleteOccurencesCollectionName);
   }
 
   static Future<String> insertEvent(MongoDbEventModel model) async {
@@ -46,6 +48,19 @@ class MongoDB {
       WriteResult result = await authenticationColl!.insertOne(model.toJSON());
       if (result.isSuccess) {
         return 'Successfully Added Account!';
+      } else {
+        return 'Something went wrong. Try again later.';
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  static Future<String> insertSingleDeleteOccurences(MongoDbSingleDeleteOccurencesModel model, String eventName) async {
+    try {
+      WriteResult result = await singleDeleteOccurencesColl!.insertOne(model.toJSON());
+      if (result.isSuccess) {
+        return 'Successfully Deleted Occurence of $eventName!';
       } else {
         return 'Something went wrong. Try again later.';
       }
@@ -180,5 +195,29 @@ class MongoDbAuthenticationModel {
         '_id': id,
         'username': username,
         'password': password,
+      };
+}
+
+class MongoDbSingleDeleteOccurencesModel {
+  late ObjectId id;
+  late ObjectId eventId;
+  late DateTime date;
+
+  MongoDbSingleDeleteOccurencesModel({
+    ObjectId? id,
+    required this.eventId,
+    required this.date,
+  }) {
+    this.id = id ?? ObjectId();
+  }
+
+  Map<String, dynamic> toJSON() => {
+        '_id': id,
+        'eventId': eventId,
+        'date': {
+          'year': date.year,
+          'month': date.month,
+          'day': date.day,
+        }
       };
 }

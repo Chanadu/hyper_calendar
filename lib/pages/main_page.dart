@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hyper_calendar/main.dart';
 import 'package:hyper_calendar/pages/create_new_task_page.dart';
 import 'package:intl/intl.dart';
 import '../util/holder.dart';
 import '../util/main_page/tasks/tasks_holder.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({
+    super.key,
+    required this.setSignIn,
+  });
+
+  final void Function(bool) setSignIn;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -17,6 +23,78 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hyper Calendar'),
+        leading: BackButton(
+          onPressed: () {
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (BuildContext ontext, void Function(void Function()) setState) {
+                    return AlertDialog(
+                      title: const Text('Back To Sign In'),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Text(
+                              'This will sign you out.',
+                              style: TextStyle(
+                                fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                                    ),
+                                    padding: const EdgeInsets.all(16.0),
+                                  ),
+                                  child: Text(
+                                    'Go Back',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    widget.setSignIn(false);
+                                    usernameId = null;
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: Theme.of(context).colorScheme.error),
+                                    ),
+                                    padding: const EdgeInsets.all(16.0),
+                                  ),
+                                  child: Text(
+                                    'Go to Sign In',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),

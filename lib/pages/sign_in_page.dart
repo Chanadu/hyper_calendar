@@ -69,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
                         }
                       } while (holder == null);
                       if (await MongoDB.authenticationColl!.find({'username': usernameController.text}).isEmpty || usernameController.text.isEmpty || passwordController.text.isEmpty) {
-                        MongoDB.insertAuthentication(
+                        String result = await MongoDB.insertAuthentication(
                           MongoDbAuthenticationModel(
                             username: usernameController.text,
                             password: passwordController.text,
@@ -80,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
                             SnackBar(
                               content: Center(
                                 child: Text(
-                                  'Account Created',
+                                  result,
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.onPrimary,
                                     fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,

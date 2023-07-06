@@ -29,6 +29,34 @@ class _TasksHolderState extends State<TasksHolder> {
   int tasksLength = 0;
   bool loading = true;
 
+  Future<bool> isSingleDeleted(Map<String, dynamic> task) async {
+    if (RepetitionTypes.values.byName((task['repetition']['state'] as String).split('.')[1]) == RepetitionTypes.doesNotRepeat) {
+      return false;
+    }
+
+    List<Map<String, dynamic>>? holder;
+    do {
+      try {
+        holder = await MongoDB.singleDeleteOccurencesColl!.find().toList();
+      } catch (_) {
+        await Future.delayed(const Duration(milliseconds: 10));
+      }
+    } while (holder == null);
+
+    for (Map<String, dynamic> deleteMap in holder) {
+      if (DateTime(
+            deleteMap['date']['year'] as int,
+            deleteMap['date']['month'] as int,
+            deleteMap['date']['day'] as int,
+          ).isAtSameMomentAs(widget.selectedDate) &&
+          deleteMap['eventId'] as mongo_db.ObjectId == task['_id'] as mongo_db.ObjectId) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   void findTasks(DateTime date) async {
     List<Map<String, dynamic>> currentTasks = [];
     List<Map<String, dynamic>>? holder;
@@ -39,9 +67,7 @@ class _TasksHolderState extends State<TasksHolder> {
         await Future.delayed(const Duration(milliseconds: 10));
       }
     } while (holder == null);
-    for (int i = 0; i < holder.length; i++) {
-      Map<String, dynamic> task = holder[i];
-
+    for (Map<String, dynamic> task in holder) {
       if (task['userId'] as mongo_db.ObjectId != usernameId!) {
         continue;
       }
@@ -58,7 +84,7 @@ class _TasksHolderState extends State<TasksHolder> {
       );
 
       if (date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0) {
-        currentTasks.add(task);
+        !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
         continue;
       }
       if (date.compareTo(startDate) < 0) {
@@ -70,21 +96,21 @@ class _TasksHolderState extends State<TasksHolder> {
         case RepetitionTypes.doesNotRepeat:
           break;
         case RepetitionTypes.daily:
-          currentTasks.add(task);
+          !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
           break;
         case RepetitionTypes.weekly:
           if (date.weekday == startDate.weekday) {
-            currentTasks.add(task);
+            !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
           }
           break;
         case RepetitionTypes.monthly:
           if (date.day == startDate.day) {
-            currentTasks.add(task);
+            !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
           }
           break;
         case RepetitionTypes.yearly:
           if (DateTime(1, date.month, date.day).isAtSameMomentAs(DateTime(1, startDate.month, startDate.day))) {
-            currentTasks.add(task);
+            !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
           }
           break;
         case RepetitionTypes.custom:
@@ -145,13 +171,13 @@ class _TasksHolderState extends State<TasksHolder> {
           switch (customRepetitionType) {
             case CustomRepetitionTypes.days:
               if ((Jiffy.parseFromDateTime(date).dayOfYear - Jiffy.parseFromDateTime(startDate).dayOfYear) % duration == 0) {
-                currentTasks.add(task);
+                !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
               }
               break;
             case CustomRepetitionTypes.weeks:
               List<Days> days = [];
               task['repetition']['custom']['dayList']['sunday'] as bool ? days.add(Days.sunday) : null;
-              task['repetition']['custom']['damongo_dbyList']['monday'] as bool ? days.add(Days.monday) : null;
+              task['repetition']['custom']['dayList']['monday'] as bool ? days.add(Days.monday) : null;
               task['repetition']['custom']['dayList']['tuesday'] as bool ? days.add(Days.tuesday) : null;
               task['repetition']['custom']['dayList']['wednesday'] as bool ? days.add(Days.wednesday) : null;
               task['repetition']['custom']['dayList']['thursday'] as bool ? days.add(Days.thursday) : null;
@@ -159,17 +185,17 @@ class _TasksHolderState extends State<TasksHolder> {
               task['repetition']['custom']['dayList']['saturday'] as bool ? days.add(Days.saturday) : null;
 
               if (days.contains(Days.values[date.weekday % 7]) && (Jiffy.parseFromDateTime(date).weekOfYear - Jiffy.parseFromDateTime(startDate).weekOfYear) % duration == 0) {
-                currentTasks.add(task);
+                !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
               }
               break;
             case CustomRepetitionTypes.months:
               if ((Jiffy.parseFromDateTime(date).month - Jiffy.parseFromDateTime(startDate).month) % duration == 0) {
-                currentTasks.add(task);
+                !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
               }
               break;
             case CustomRepetitionTypes.years:
               if ((Jiffy.parseFromDateTime(date).year - Jiffy.parseFromDateTime(startDate).year) % duration == 0) {
-                currentTasks.add(task);
+                !(await isSingleDeleted(task)) ? currentTasks.add(task) : null;
               }
               break;
           }

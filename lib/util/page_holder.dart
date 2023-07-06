@@ -33,7 +33,9 @@ class _PageHolderState extends State<PageHolder> {
           return const LoadingPage();
         } else {
           return signedIn
-              ? const MainPage()
+              ? MainPage(
+                  setSignIn: (p0) => setSignedIn(p0),
+                )
               : SignInPage(
                   setSignIn: (p0) => setSignedIn(p0),
                 );
