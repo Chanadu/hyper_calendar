@@ -10,6 +10,8 @@ class HiveDB {
   String username = '';
   String password = '';
 
+  
+
   final _userAuthStore = Hive.box('userAuthStore');
 
   void createInitialData() {

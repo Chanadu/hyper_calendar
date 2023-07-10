@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hyper_calendar/pages/loading_page.dart';
 import 'package:hyper_calendar/pages/sign_in_page.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
-
 import 'mongo_db.dart';
 import '../pages/main_page.dart';
 
@@ -14,6 +13,11 @@ class PageHolder extends StatefulWidget {
 }
 
 class _PageHolderState extends State<PageHolder> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   bool signedIn = false;
 
   void setSignedIn(bool signedIn) {
