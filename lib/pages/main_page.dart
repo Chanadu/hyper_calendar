@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
   void getUsername() async {
     do {
       try {
-        username = (await MongoDB.authenticationColl!.findOne({'_id': usernameId}))!['username'] as String;
+        username = (await (await MongoDB.authenticationColl)!.findOne({'_id': usernameId}))!['username'] as String;
       } catch (_) {
         await Future.delayed(const Duration(milliseconds: 100));
       }

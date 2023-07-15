@@ -46,13 +46,13 @@ class _SignInPageState extends State<SignInPage> {
     List<Map<String, dynamic>>? holder;
     do {
       try {
-        holder = await MongoDB.authenticationColl!.find().toList();
+        holder = await (await MongoDB.authenticationColl)!.find().toList();
       } catch (_) {
         await Future.delayed(const Duration(milliseconds: 10));
       }
     } while (holder == null);
 
-    Map<String, dynamic>? auth = await MongoDB.authenticationColl!.findOne(
+    Map<String, dynamic>? auth = await (await MongoDB.authenticationColl)!.findOne(
       {
         'username': usernameController.text,
         'password': passwordController.text,
@@ -148,12 +148,12 @@ class _SignInPageState extends State<SignInPage> {
                       List<Map<String, dynamic>>? holder;
                       do {
                         try {
-                          holder = await MongoDB.authenticationColl!.find().toList();
+                          holder = await (await MongoDB.authenticationColl)!.find().toList();
                         } catch (_) {
                           await Future.delayed(const Duration(milliseconds: 10));
                         }
                       } while (holder == null);
-                      if (await MongoDB.authenticationColl!.find({'username': usernameController.text}).isEmpty || usernameController.text.isEmpty || passwordController.text.isEmpty) {
+                      if (await (await MongoDB.authenticationColl)!.find({'username': usernameController.text}).isEmpty || usernameController.text.isEmpty || passwordController.text.isEmpty) {
                         String result = await MongoDB.insertAuthentication(
                           MongoDbAuthenticationModel(
                             username: usernameController.text,

@@ -31,7 +31,7 @@ class _PageHolderState extends State<PageHolder> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<mongo.Db>(
-      future: MongoDB.db,
+      future: MongoDB.futureDb,
       builder: (BuildContext context, AsyncSnapshot<mongo.Db> snapshot) {
         if (!snapshot.hasData) {
           return const LoadingPage();

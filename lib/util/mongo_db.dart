@@ -10,33 +10,68 @@ import 'enums/repetition_types.dart';
 import 'enums/reptition_end_type.dart';
 
 class MongoDB {
-  static Future<Db>? db;
-  static DbCollection? eventsColl;
-  static DbCollection? authenticationColl;
-  static DbCollection? singleDeleteOccurencesColl;
+  static Future<Db>? futureDb;
+  static late Db? db;
+  static DbCollection? _eventsColl;
+  static Future<DbCollection?> get eventsColl async {
+    if (!db!.isConnected) {
+      await db!.close();
+      await db!.open();
+      print("Db broke");
+    }
+    return _eventsColl;
+  }
+
+  static DbCollection? _authenticationColl;
+  static Future<DbCollection?> get authenticationColl async {
+    if (!db!.isConnected) {
+      await db!.close();
+      await db!.open();
+      print("Db broke");
+    }
+    return _authenticationColl;
+  }
+
+  static DbCollection? _singleDeleteOccurencesColl;
+  static Future<DbCollection?> get singleDeleteOccurencesColl async {
+    if (!db!.isConnected) {
+      await db!.close();
+      await db!.open();
+      print("Db broke");
+    }
+    return _singleDeleteOccurencesColl;
+  }
 
   static Future<Db>? getDb() {
-    if (eventsColl == null || db == null) {
+    if (_eventsColl == null || futureDb == null) {
       return null;
     }
-    return db;
+    return futureDb;
   }
 
   static void start() async {
-    db = Db.create(MongoDBInfo.connectionURL);
-    (await db)!.open();
-    eventsColl = (await db!).collection(MongoDBInfo.eventCollectionName);
-    authenticationColl = (await db!).collection(MongoDBInfo.authenticationCollectionName);
-    singleDeleteOccurencesColl = (await db!).collection(MongoDBInfo.singleDeleteOccurencesCollectionName);
+    futureDb = Db.create(MongoDBInfo.connectionURL);
+    (await futureDb)!.open();
+    db = await futureDb!;
+    _eventsColl = db!.collection(MongoDBInfo.eventCollectionName);
+    _authenticationColl = db!.collection(MongoDBInfo.authenticationCollectionName);
+    _singleDeleteOccurencesColl = db!.collection(MongoDBInfo.singleDeleteOccurencesCollectionName);
   }
 
   static Future<String> insertEvent(MongoDbEventModel model) async {
     try {
-      WriteResult result = await eventsColl!.insertOne(model.toJSON());
-      if (result.isSuccess) {
-        return 'Successfully Added Event!';
+      if (db!.isConnected) {
+        WriteResult result = await _eventsColl!.insertOne(model.toJSON());
+        if (result.isSuccess) {
+          return 'Successfully Added Event!';
+        } else {
+          return 'Something went wrong. Try again later.';
+        }
       } else {
-        return 'Something went wrong. Try again later.';
+        await db!.close();
+        await db!.open();
+        print("Db broke");
+        return insertEvent(model);
       }
     } catch (e) {
       return e.toString();
@@ -45,11 +80,18 @@ class MongoDB {
 
   static Future<String> insertAuthentication(MongoDbAuthenticationModel model) async {
     try {
-      WriteResult result = await authenticationColl!.insertOne(model.toJSON());
-      if (result.isSuccess) {
-        return 'Successfully Added Account!';
+      if (db!.isConnected) {
+        WriteResult result = await _authenticationColl!.insertOne(model.toJSON());
+        if (result.isSuccess) {
+          return 'Successfully Added Account!';
+        } else {
+          return 'Something went wrong. Try again later.';
+        }
       } else {
-        return 'Something went wrong. Try again later.';
+        await db!.close();
+        await db!.open();
+        print("Db broke");
+        return insertAuthentication(model);
       }
     } catch (e) {
       return e.toString();
@@ -58,11 +100,18 @@ class MongoDB {
 
   static Future<String> insertSingleDeleteOccurences(MongoDbSingleDeleteOccurencesModel model, String eventName) async {
     try {
-      WriteResult result = await singleDeleteOccurencesColl!.insertOne(model.toJSON());
-      if (result.isSuccess) {
-        return 'Successfully Deleted Occurence of $eventName!';
+      if (db!.isConnected) {
+        WriteResult result = await _singleDeleteOccurencesColl!.insertOne(model.toJSON());
+        if (result.isSuccess) {
+          return 'Successfully Deleted Occurence of $eventName!';
+        } else {
+          return 'Something went wrong. Try again later.';
+        }
       } else {
-        return 'Something went wrong. Try again later.';
+        await db!.close();
+        await db!.open();
+        print("Db broke");
+        return insertSingleDeleteOccurences(model, eventName);
       }
     } catch (e) {
       return e.toString();

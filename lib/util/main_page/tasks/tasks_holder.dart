@@ -37,7 +37,7 @@ class _TasksHolderState extends State<TasksHolder> {
     List<Map<String, dynamic>>? holder;
     do {
       try {
-        holder = await MongoDB.singleDeleteOccurencesColl!.find().toList();
+        holder = await (await MongoDB.singleDeleteOccurencesColl)!.find().toList();
       } catch (_) {
         await Future.delayed(const Duration(milliseconds: 10));
       }
@@ -62,7 +62,7 @@ class _TasksHolderState extends State<TasksHolder> {
     List<Map<String, dynamic>>? holder;
     do {
       try {
-        holder = await MongoDB.eventsColl!.find().toList();
+        holder = await (await MongoDB.eventsColl)!.find().toList();
       } catch (_) {
         await Future.delayed(const Duration(milliseconds: 10));
       }
@@ -133,7 +133,7 @@ class _TasksHolderState extends State<TasksHolder> {
               }
               break;
             case RepetitionEndType.after:
-              int endOccurences = task['repetition']['custom']['end']['occurences'] as int;
+              int endOccurences = task['repetition']['custom']['end']['occurences'] as int? ?? 1;
               switch (customRepetitionType) {
                 case CustomRepetitionTypes.days:
                   if (((Jiffy.parseFromDateTime(date).dayOfYear - Jiffy.parseFromDateTime(startDate).dayOfYear) / duration) + 1 > endOccurences) {
