@@ -17,7 +17,6 @@ class MongoDB {
     if (!db!.isConnected) {
       await db!.close();
       await db!.open();
-      print("Db broke");
     }
     return _eventsColl;
   }
@@ -27,7 +26,6 @@ class MongoDB {
     if (!db!.isConnected) {
       await db!.close();
       await db!.open();
-      print("Db broke");
     }
     return _authenticationColl;
   }
@@ -37,7 +35,6 @@ class MongoDB {
     if (!db!.isConnected) {
       await db!.close();
       await db!.open();
-      print("Db broke");
     }
     return _singleDeleteOccurencesColl;
   }
@@ -70,7 +67,6 @@ class MongoDB {
       } else {
         await db!.close();
         await db!.open();
-        print("Db broke");
         return insertEvent(model);
       }
     } catch (e) {
@@ -90,7 +86,6 @@ class MongoDB {
       } else {
         await db!.close();
         await db!.open();
-        print("Db broke");
         return insertAuthentication(model);
       }
     } catch (e) {
@@ -110,7 +105,6 @@ class MongoDB {
       } else {
         await db!.close();
         await db!.open();
-        print("Db broke");
         return insertSingleDeleteOccurences(model, eventName);
       }
     } catch (e) {
