@@ -234,7 +234,7 @@ class _TasksHolderState extends State<TasksHolder> {
     findTasks(widget.selectedDate);
     return Holder(
       width: MediaQuery.of(context).size.width * 2.0 / 3.0,
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.only(top: 16, left: 32, right: 32, bottom: 48),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,

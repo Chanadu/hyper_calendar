@@ -20,11 +20,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   final _myBox = Hive.box('userAuthStore');
   HiveDB db = HiveDB.current;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -42,7 +41,7 @@ class _SignInPageState extends State<SignInPage> {
     db.updateDataBase();
   }
 
-  void signIn() async {
+  void signIn({bool dbUse = false}) async {
     List<Map<String, dynamic>>? holder;
     do {
       try {
@@ -54,8 +53,8 @@ class _SignInPageState extends State<SignInPage> {
 
     Map<String, dynamic>? auth = await (await MongoDB.authenticationColl)!.findOne(
       {
-        'username': usernameController.text,
-        'password': passwordController.text,
+        'username': !dbUse ? usernameController.text : db.username,
+        'password': !dbUse ? passwordController.text : db.password,
       },
     );
 
@@ -106,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
     usernameController.text = db.username;
     passwordController.text = db.password;
     if (db.username.isNotEmpty && db.password.isNotEmpty) {
-      signIn();
+      signIn(dbUse: true);
     }
     return Scaffold(
       appBar: AppBar(

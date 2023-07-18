@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextInputListTile extends StatelessWidget {
+class TextInputListTile extends StatefulWidget {
   const TextInputListTile({
     super.key,
     required this.title,
@@ -23,31 +23,42 @@ class TextInputListTile extends StatelessWidget {
   final Icon? icon;
 
   @override
+  State<TextInputListTile> createState() => _TextInputListTileState();
+}
+
+class _TextInputListTileState extends State<TextInputListTile> {
+  String text = '';
+
+  @override
   Widget build(BuildContext context) {
+    widget.controller.text = text;
     return Container(
       margin: const EdgeInsets.only(top: 15.0),
       child: TextField(
-        controller: controller,
+        onChanged: (value) {
+          text = widget.controller.text;
+        },
+        controller: widget.controller,
         style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          hintText: hint,
-          labelText: title,
-          icon: icon,
+          hintText: widget.hint,
+          labelText: widget.title,
+          icon: widget.icon,
         ),
-        maxLines: maxLines,
+        maxLines: widget.maxLines,
         minLines: 1,
-        maxLength: maxLength,
+        maxLength: widget.maxLength,
         obscuringCharacter: '*',
-        obscureText: isPassword ?? false,
-        enableSuggestions: isPassword == null ? true : !isPassword!,
-        autocorrect: isPassword == null
-            ? isUsername == null
+        obscureText: widget.isPassword ?? false,
+        enableSuggestions: widget.isPassword == null ? true : !widget.isPassword!,
+        autocorrect: widget.isPassword == null
+            ? widget.isUsername == null
                 ? true
-                : !isUsername!
-            : !isPassword!,
+                : !widget.isUsername!
+            : !widget.isPassword!,
       ),
     );
   }

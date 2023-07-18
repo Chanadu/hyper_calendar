@@ -18,7 +18,7 @@ class LoadingPage extends StatelessWidget {
                 Image.asset(
                   'assets/HyperCalendarLogo.png',
                   height: MediaQuery.of(context).size.height / 2,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 Container(
                   decoration: BoxDecoration(

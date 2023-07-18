@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hyper_calendar/main.dart';
 import 'package:hyper_calendar/pages/create_new_task_page.dart';
@@ -34,8 +36,14 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    HiveDB.current.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getUsername();
+    if (username == null) getUsername();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hyper Calendar'),
@@ -194,7 +202,7 @@ class _MainCalendarState extends State<MainCalendar> {
                       },
                       icon: const Icon(Icons.arrow_left_rounded),
                       color: Theme.of(context).colorScheme.primary,
-                      iconSize: 75,
+                      iconSize: Platform.isIOS ? 50 : 75,
                       splashRadius: 35,
                     ),
                     Container(
@@ -220,7 +228,7 @@ class _MainCalendarState extends State<MainCalendar> {
                       },
                       icon: const Icon(Icons.arrow_right_rounded),
                       color: Theme.of(context).colorScheme.primary,
-                      iconSize: 75,
+                      iconSize: Platform.isIOS ? 50 : 75,
                       splashRadius: 35,
                     ),
                   ],
@@ -246,9 +254,8 @@ class _MainCalendarState extends State<MainCalendar> {
                   border: Border.all(color: Theme.of(context).colorScheme.primary),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                height: MediaQuery.of(context).size.height * 4.0 / 7.0 + 2, // good math; use 4.0 / 7.0 for only 6 rows; idk why the +2 works, but it does
+                height: MediaQuery.of(context).size.height * 4.0 / 7.0 + 2, // math and stuff
                 width: MediaQuery.of(context).size.width * 2.0 / 3.0,
-
                 child: GridView.count(
                   crossAxisCount: 7,
                   childAspectRatio: MediaQuery.of(context).size.width / MediaQuery.of(context).size.height,
@@ -292,23 +299,28 @@ class _MainCalendarState extends State<MainCalendar> {
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(16),
                                           ),
+                                          elevation: 0,
+                                          padding: const EdgeInsets.all(0.0),
+                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         ),
                                         child: Text(
                                           '${i - calendarWeekStartIndex}',
                                           style:
                                               DateTime.now().day == i - calendarWeekStartIndex && DateTime.now().month == currentMonthYearDate.month && DateTime.now().year == currentMonthYearDate.year
                                                   ? TextStyle(
-                                                      fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                                      fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
                                                       color: Theme.of(context).colorScheme.primary,
                                                     )
-                                                  : Theme.of(context).textTheme.bodyMedium,
+                                                  : TextStyle(
+                                                      fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
+                                                    ),
                                         ),
                                       ),
                                     )
                                   : Text(
                                       '${(i - calendarWeekStartIndex) % numberOfDaysInMonth}',
                                       style: TextStyle(
-                                        fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                        fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
                                         color: Theme.of(context).colorScheme.surfaceVariant,
                                       ),
                                     )
@@ -316,7 +328,7 @@ class _MainCalendarState extends State<MainCalendar> {
                                   ? Text(
                                       '${(i - calendarWeekStartIndex - 1) % 32}',
                                       style: TextStyle(
-                                        fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                        fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
                                         color: Theme.of(context).colorScheme.surfaceVariant,
                                       ),
                                     )
@@ -324,14 +336,14 @@ class _MainCalendarState extends State<MainCalendar> {
                                       ? Text(
                                           '${(i - calendarWeekStartIndex - 1) % 31}',
                                           style: TextStyle(
-                                            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                            fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
                                             color: Theme.of(context).colorScheme.surfaceVariant,
                                           ),
                                         )
                                       : Text(
                                           '${(i - calendarWeekStartIndex - 1) % 29}',
                                           style: TextStyle(
-                                            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                                            fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
                                             color: Theme.of(context).colorScheme.surfaceVariant,
                                           ),
                                         ),
