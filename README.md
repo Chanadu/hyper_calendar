@@ -1,3 +1,5 @@
 # hyper_calendar
 
-This is a calendar project made by Chanadu.
+A fully functional cross platform calendar and todo list built using the Flutter framework, including a calendar framework built from scratch.
+
+
